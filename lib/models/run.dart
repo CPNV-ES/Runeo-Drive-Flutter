@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
+
 import 'package:RuneoDriverFlutter/models/waypoint.dart';
 import 'package:RuneoDriverFlutter/models/runner.dart';
-import 'package:equatable/equatable.dart';
 
 class Run extends Equatable {
   int id;

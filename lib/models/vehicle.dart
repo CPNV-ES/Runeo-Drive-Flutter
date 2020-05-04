@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
+
 import 'package:RuneoDriverFlutter/models/comment.dart';
 import 'package:RuneoDriverFlutter/models/vehicle_category.dart';
-import 'package:equatable/equatable.dart';
 import 'package:RuneoDriverFlutter/models/user.dart';
 
 class Vehicle extends Equatable {

@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import 'package:RuneoDriverFlutter/models/user.dart';
 import 'package:RuneoDriverFlutter/models/vehicle.dart';
 import 'package:RuneoDriverFlutter/models/vehicle_category.dart';
-import 'package:equatable/equatable.dart';
 
 class Runner extends Equatable {
   int id;

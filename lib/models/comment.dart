@@ -1,5 +1,6 @@
-import 'package:RuneoDriverFlutter/models/user.dart';
 import 'package:equatable/equatable.dart';
+
+import 'package:RuneoDriverFlutter/models/user.dart';
 
 class Comment extends Equatable {
 	int id;
