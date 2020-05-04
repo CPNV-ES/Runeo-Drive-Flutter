@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:RuneoDriverFlutter/views/runs/runs_page.dart';
 import 'package:RuneoDriverFlutter/bloc/index.dart';
 import 'package:RuneoDriverFlutter/repository/run_repository.dart';
 void main() {
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocProvider(
         create: (context) => RunBloc(repository: RunRepositoryImpl()),
-        child: HomePage(),
+        child: RunsPage(),
       ),
     );
   }

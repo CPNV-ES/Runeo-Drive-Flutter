@@ -19,7 +19,7 @@ class RunBloc extends Bloc<RunEvent, RunState> {
 	Stream<RunState> mapEventToState(
 		RunEvent event,
 	) async* {
-		if (event is GetRuns) {
+		if (event is GetRunsEvent) {
 			yield RunLoadingState();
 			try {
 				final List<Run> runs = await repository.getRuns();

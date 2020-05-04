@@ -6,9 +6,7 @@ abstract class RunEvent extends Equatable {
 	const RunEvent();
 }
 
-class GetRuns extends RunEvent {
-	const GetRuns();
-
+class GetRunsEvent extends RunEvent {
 	@override
-	List<Object> get props => [];
+	List<Object> get props => null;
 }
