@@ -10,7 +10,7 @@ class RunRepository {
     @required this.runApiProvider
   }) : assert(runApiProvider != null);
 
-  Future<Run> getRuns() async {
+  Future<List<Run>> getRuns() async {
     return await runApiProvider.getRuns();
   }
 }
