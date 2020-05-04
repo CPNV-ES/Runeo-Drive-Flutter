@@ -1,18 +1,19 @@
+import 'package:equatable/equatable.dart';
+
 import 'package:RuneoDriverFlutter/models/waypoint.dart';
 import 'package:RuneoDriverFlutter/models/runner.dart';
-import 'package:equatable/equatable.dart';
 
 class Run extends Equatable {
   int id;
   String status;
   String title;
-  DateTime beginAt;
-  DateTime startAt;
+  String beginAt;
+  String startAt;
   List<String> updatedAt;
   int paxTbc;
   int timeTbc;
-  DateTime endAt;
-  DateTime finishedAt;
+  String endAt;
+  String finishedAt;
   int nbPassenger;
   String runinfo;
   String nameContact;
@@ -28,13 +29,13 @@ class Run extends Equatable {
       {int id,
       String status,
       String title,
-      DateTime beginAt,
-      DateTime startAt,
+      String beginAt,
+      String startAt,
       List<String> updatedAt,
       int paxTbc,
       int timeTbc,
-      DateTime endAt,
-      DateTime finishedAt,
+      String endAt,
+      String finishedAt,
       int nbPassenger,
       String runinfo,
       String nameContact,
@@ -77,19 +78,19 @@ class Run extends Equatable {
     id = json['id'];
     status = json['status'];
     title = json['title'];
-    beginAt = json['beginat'];
-    startAt = json['startat'];
-    if (json['updatedat'] != null) {
-      new List<String>.from(json['updatedat']);
+    beginAt = json['begin_at'];
+    startAt = json['start_at'];
+    if (json['updated_at'] != null) {
+      new List<String>.from(json['updated_at']);
     }
-    paxTbc = json['paxtbc'];
-    timeTbc = json['timetbc'];
-    endAt = json['endat'];
-    finishedAt = json['finishedat'];
-    nbPassenger = json['nbpassenger'];
+    paxTbc = json['pax_tbc'];
+    timeTbc = json['time_tbc'];
+    endAt = json['end_at'];
+    finishedAt = json['finished_at'];
+    nbPassenger = json['nb_passenger'];
     runinfo = json['runinfo'];
-    nameContact = json['namecontact'];
-    numContact = json['numcontact'];
+    nameContact = json['name_contact'];
+    numContact = json['num_contact'];
     flight = json['flight'];
     train = json['train'];
     if (json['waypoints'] != null) {
@@ -111,19 +112,19 @@ class Run extends Equatable {
     data['id'] = this.id;
     data['status'] = this.status;
     data['title'] = this.title;
-    data['beginat'] = this.beginAt;
-    data['startat'] = this.startAt;
+    data['begin_at'] = this.beginAt;
+    data['start_at'] = this.startAt;
     if (this.updatedAt != null) {
-      data['updatedat'] = this.updatedAt;
+      data['updated_at'] = this.updatedAt;
     }
-    data['paxtbc'] = this.paxTbc;
-    data['timetbc'] = this.timeTbc;
-    data['endat'] = this.endAt;
-    data['finishedat'] = this.finishedAt;
-    data['nbpassenger'] = this.nbPassenger;
+    data['pax_tbc'] = this.paxTbc;
+    data['time_tbc'] = this.timeTbc;
+    data['end_at'] = this.endAt;
+    data['finished_at'] = this.finishedAt;
+    data['nb_passenger'] = this.nbPassenger;
     data['runinfo'] = this.runinfo;
-    data['namecontact'] = this.nameContact;
-    data['numcontact'] = this.numContact;
+    data['name_contact'] = this.nameContact;
+    data['num_contact'] = this.numContact;
     data['flight'] = this.flight;
     data['train'] = this.train;
     if (this.waypoints != null) {

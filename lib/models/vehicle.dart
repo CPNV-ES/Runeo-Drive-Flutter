@@ -1,5 +1,7 @@
-import 'package:RuneoDriverFlutter/models/vehicle_category.dart';
 import 'package:equatable/equatable.dart';
+
+import 'package:RuneoDriverFlutter/models/comment.dart';
+import 'package:RuneoDriverFlutter/models/vehicle_category.dart';
 import 'package:RuneoDriverFlutter/models/user.dart';
 
 class Vehicle extends Equatable {
@@ -11,7 +13,7 @@ class Vehicle extends Equatable {
   String status;
   User user;
   VehicleCategory type;
-  List<String> comments;
+  List<Comment> comments;
 
   Vehicle(
       {int id,
@@ -22,7 +24,7 @@ class Vehicle extends Equatable {
       String status,
       User user,
       VehicleCategory type,
-      List<String> comments}) {
+      List<Comment> comments}) {
     this.id = id;
     this.name = name;
     this.plateNumber = plateNumber;
@@ -47,7 +49,10 @@ class Vehicle extends Equatable {
     user = json['user'] != null ? new User.fromJson(json['user']): null;
     type = json['type'] != null ? new VehicleCategory.fromJson(json['type']) : null;
     if (json['comments'] != null) {
-      new List<String>.from(json['comments']);
+      comments = new List<Comment>();
+      json['comments'].forEach((v) {
+        comments.add(new Comment.fromJson(v));
+      });
     }
   }
 
@@ -66,7 +71,7 @@ class Vehicle extends Equatable {
       data['type'] = this.type.toJson();
     }
     if (this.comments != null) {
-      data['comments'] = this.comments;
+      data['comments'] = this.comments.map((e) => e.toJson()).toList();
     }
     return data;
   }

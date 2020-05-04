@@ -1,5 +1,6 @@
-import 'package:RuneoDriverFlutter/models/run.dart';
 import 'package:equatable/equatable.dart';
+
+import 'package:RuneoDriverFlutter/models/run.dart';
 
 class User extends Equatable {
    int id;
