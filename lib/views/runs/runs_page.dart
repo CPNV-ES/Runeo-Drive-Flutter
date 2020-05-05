@@ -1,3 +1,4 @@
+import 'package:RuneoDriverFlutter/views/runs/widgets/run_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -89,25 +90,9 @@ Widget buildErrorUi(String message) {
 	);
 }
 
-Widget buildRunList(List<Run> runs) {
-	return ListView.builder(
-		itemCount: runs.length,
-		itemBuilder: (ctx, pos) {
-			return Padding(
-				padding: const EdgeInsets.all(8.0),
-				child: InkWell(
-					child: ListTile(
-						leading: ClipOval(
-							child: Hero(
-								tag: runs[pos].title,
-								child: Text(runs[pos].status),
-							),
-						),
-						title: Text(runs[pos].title),
-						subtitle: Text(runs[pos].beginAt),
-					),
-				),
-			);
-		},
-	);
-}
+Widget buildRunList(List<Run> runs) => ListView.builder(
+	itemCount: runs.length,
+     itemBuilder: (context, index) => RunListItem(
+      run: runs[index],
+     )
+  );
