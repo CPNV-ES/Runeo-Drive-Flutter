@@ -9,12 +9,12 @@ class Comment extends Equatable {
 	String created_at;
 
 	Comment(
-		{
-			int id,
-			String content,
-			User user,
-			String created_at
-		}
+	{
+    int id,
+    String content,
+    User user,
+    String created_at
+	}
 	) {
 		this.id = id;
 		this.content = content;
