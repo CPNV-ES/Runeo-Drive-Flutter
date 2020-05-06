@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:RuneoDriverFlutter/views/runs/runs_page.dart';
 import 'package:RuneoDriverFlutter/bloc/index.dart';
 import 'package:RuneoDriverFlutter/repository/run_repository.dart';
 void main() {
+  initializeDateFormatting("fr_CH");
   runApp(MyApp());
 }
 

@@ -62,8 +62,8 @@ class Run extends Equatable {
     this.numContact = numContact ?? null;
     this.flight = flight ?? null;
 		this.train = train ?? null;
-		this.recentlyCreated = recentlyCreated;
-		this.recentlyUpdated = recentlyUpdated;
+		this.recentlyCreated = recentlyCreated ?? false;
+		this.recentlyUpdated = recentlyUpdated ?? false;
     this.waypoints = waypoints;
     this.runners = runners;
   }
