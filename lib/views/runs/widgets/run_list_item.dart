@@ -1,18 +1,25 @@
 import 'package:RuneoDriverFlutter/models/index.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 
 class RunListItem extends StatelessWidget {
   final Run run;
   final Function onTap;
   const RunListItem({this.run, this.onTap});
+  
+
+  void init() {
+    //initializeDateFormatting("fr_CH");
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-        padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(20.0),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(5.0),
@@ -22,13 +29,47 @@ class RunListItem extends StatelessWidget {
                   offset: Offset(0.0, 2.0),
                   color: Color.fromARGB(80, 0, 0, 0))
             ]),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(run.title, style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16.0),),
-            Text(run.status, maxLines: 2, overflow: TextOverflow.ellipsis)
-          ],
-        ),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    run.title,
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  (run.waypoints.length > 0) ?
+                  Text(
+                    run.waypoints[0].nickname,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ) : '',
+                  (run.recentlyUpdated != null) ?
+                    Text(
+                      "Maj",
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w900),
+                    ) : Text(""),
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                    DateFormat('EEE HH:mm', 'fr_CH').format(DateTime.parse(run.beginAt)),
+                  ),
+                  Text(
+                    "Admin"
+                  )
+                ]
+                
+              ) 
+            ],
+          )
       ),
     );
   }
