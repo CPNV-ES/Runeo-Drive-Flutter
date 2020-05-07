@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:RuneoDriverFlutter/views/runs/runs_page.dart';
-import 'package:RuneoDriverFlutter/bloc/index.dart';
+import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
 import 'package:RuneoDriverFlutter/repository/run_repository.dart';
 void main() {
   initializeDateFormatting("fr_CH");
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: BlocProvider(
+      home: BlocProvider<RunBloc>(
         create: (context) => RunBloc(repository: RunRepositoryImpl()),
         child: RunsPage(),
       ),
