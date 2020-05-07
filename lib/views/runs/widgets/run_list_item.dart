@@ -42,6 +42,11 @@ class RunListItem extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ) : '',
+                  Text(
+                    run.status,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   (run.recentlyUpdated != null) ?
                     Text(
                       "Maj",
