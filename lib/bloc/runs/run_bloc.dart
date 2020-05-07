@@ -19,8 +19,8 @@ class RunBloc extends Bloc<RunEvent, RunState> {
 	Stream<RunState> mapEventToState(
 		RunEvent event,
 	) async* {
-    final List<Run> runs = await repository.getRuns();
 		if (event is GetRunsEvent) {
+      final List<Run> runs = await repository.getRuns();
 			yield RunLoadingState();
 			try {			
 				yield RunLoadedState(runs: runs);
@@ -30,7 +30,8 @@ class RunBloc extends Bloc<RunEvent, RunState> {
 		} else if (event is FilterUpdated) {
       yield RunLoadingState();
 			try {
-				yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, event.filter));
+        final List<Run> runs = await repository.getRuns();
+				yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, event.filter), activeFilter: event.filter);
 			} catch (e) {
 				yield RunErrorState(message: e.toString());
 			}
@@ -44,5 +45,11 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     } else {
       return runs.where((run) => run.status == filter).toList();
     }
+  }
+
+  @override
+  Future<void> close() async{
+    // dispose objects
+    await super.close();
   }
 }

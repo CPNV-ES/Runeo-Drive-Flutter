@@ -16,7 +16,7 @@ class RunApiProvider {
 			});
 
 		if (response.statusCode == 200) {
-			List<dynamic> data = json.decode(response.body);
+			final data = json.decode(response.body);
       return data;
 		} else {
 			throw Exception('error getting runs');

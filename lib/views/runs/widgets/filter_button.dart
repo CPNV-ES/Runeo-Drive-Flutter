@@ -9,10 +9,10 @@ class FilterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final defaultStyle = Theme.of(context).textTheme.bodyText2;
+    final defaultStyle = Theme.of(context).textTheme.bodyText1;
     final activeStyle = Theme.of(context)
         .textTheme
-        .bodyText2
+        .bodyText1
         .copyWith(color: Theme.of(context).accentColor);
     final RunBloc runBloc =
         BlocProvider.of<RunBloc>(context);
@@ -72,6 +72,15 @@ class _Button extends StatelessWidget {
               child: Text(
                 "Show in progress",
                 style: activeFilter == "drafting"
+                    ? activeStyle
+                    : defaultStyle,
+              ),
+            ),
+            PopupMenuItem<String>(
+              value: "needs_filling",
+              child: Text(
+                "Show needs filling",
+                style: activeFilter == "needs_filling"
                     ? activeStyle
                     : defaultStyle,
               ),
