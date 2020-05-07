@@ -1,8 +1,9 @@
+import 'package:RuneoDriverFlutter/views/runs/widgets/filter_button.dart';
 import 'package:RuneoDriverFlutter/views/runs/widgets/run_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:RuneoDriverFlutter/bloc/index.dart';
+import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
 import 'package:RuneoDriverFlutter/models/index.dart';
 
 class RunsPage extends StatefulWidget {
@@ -30,6 +31,7 @@ class _RunsPageState extends State<RunsPage> {
 							appBar: AppBar(
 								title: Text("Runeo"),
 								actions: <Widget>[
+                  FilterButton(visible: true),
 									IconButton(
 										icon: Icon(Icons.refresh),
 										onPressed: () {
