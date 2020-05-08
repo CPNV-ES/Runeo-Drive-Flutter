@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:RuneoDriverFlutter/models/index.dart';
 import 'package:RuneoDriverFlutter/repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -38,10 +39,11 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   Stream<AuthenticationState> _mapAppLoadedToState(AppLoaded event) async* {
     yield AuthenticationLoading(); // to display splash screen
     try {
-      final bool currentUser = await userRepository.isAuthenticated();
+      final bool currentUserExist = await userRepository.isAuthenticated();
 
-      if (currentUser) {
-        yield AuthenticationAuthenticated();
+      if (currentUserExist) {
+        final User currentUser = await userRepository.getCurrentUser();
+        yield AuthenticationAuthenticated(user: currentUser);
       } else {
         yield AuthenticationUnauthenticated();
       }
@@ -51,8 +53,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   }
 
   Stream<AuthenticationState> _mapUserLoggedInToState(LoggedIn event) async* {
-    await userRepository.authenticate(key: event.token);
-    yield AuthenticationAuthenticated();
+    yield AuthenticationAuthenticated(user: event.user);
   }
 
   Stream<AuthenticationState> _mapUserLoggedOutToState(LoggedOut event) async* {

@@ -1,3 +1,4 @@
+import 'package:RuneoDriverFlutter/models/index.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -12,7 +13,14 @@ class AuthenticationUninitialized extends AuthenticationState {}
 
 class AuthenticationUnauthenticated extends AuthenticationState {}
 
-class AuthenticationAuthenticated extends AuthenticationState {}
+class AuthenticationAuthenticated extends AuthenticationState {
+  final User user;
+
+  AuthenticationAuthenticated({@required this.user});
+
+  @override
+  List<Object> get props => [user];
+}
 
 class AuthenticationLoading extends AuthenticationState {}
 
