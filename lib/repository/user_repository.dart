@@ -29,7 +29,7 @@ class UserRepositoryImpl implements UserRepository {
     this._saveToStorage("token", key);
     final response = await _provider.get("me");
     this._saveToStorage("currentUser", User.fromJson(response));
-    return response;
+    return User.fromJson(response);
   }
 
   Future<User> getCurrentUser() async {
@@ -69,13 +69,11 @@ class UserRepositoryImpl implements UserRepository {
 
   Future<void> _deleteFromStorage(String key) async {
     /// delete from keystore/keychain
-    await this.storage.deleteItem(key);
-    return;
+    return await this.storage.deleteItem(key);
   }
 
   Future<void> _saveToStorage(String key, dynamic value) async {
     /// write to keystore/keychain
-    await this.storage.setItem(key, value);
-    return;
+    return await this.storage.setItem(key, value);
   }
 }
