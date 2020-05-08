@@ -45,10 +45,10 @@ class User extends Equatable {
     firstname = json['firstname'];
     lastname = json['lastname'];
     email = json['email'];
-    phoneNumber = json['phonenumber'];
+    phoneNumber = json['phone_number'];
     status = json['status'];
-    imageProfile = json['imageprofile'];
-    hasNotificationToken = json['hasnotificationtoken'];
+    imageProfile = json['image_profile'];
+    hasNotificationToken = json['has_notification_token'];
   }
 
   Map<String, dynamic> toJson() {
@@ -58,10 +58,10 @@ class User extends Equatable {
     data['firstname'] = this.firstname;
     data['lastname'] = this.lastname;
     data['email'] = this.email;
-    data['phonenumber'] = this.phoneNumber;
+    data['phone_number'] = this.phoneNumber;
     data['status'] = this.status;
-    data['imageprofile'] = this.imageProfile;
-    data['hasnotificationtoken'] = this.hasNotificationToken;
+    data['image_profile'] = this.imageProfile;
+    data['has_notification_token'] = this.hasNotificationToken;
     return data;
   }
 
