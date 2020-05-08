@@ -64,8 +64,4 @@ class User extends Equatable {
     data['has_notification_token'] = this.hasNotificationToken;
     return data;
   }
-
-	bool belongsToRun(Run run) {
-		return !!run.runners.any((runner) => runner.user.id == this.id);
-	}
 }
