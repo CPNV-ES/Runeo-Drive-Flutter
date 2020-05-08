@@ -67,7 +67,11 @@ class _RunsPageState extends State<RunsPage> {
                       } else if (state is RunLoadingState) {
                         return buildLoading();
                       } else if (state is RunLoadedState) {
-                        return buildRunList(state.runs);
+                        if (state.runs != null) {
+                          return buildRunList(state.runs);
+                        } else {
+                          return Text('Aucune run disponible');
+                        }
                       } else if (state is RunErrorState) {
                         return buildErrorUi(state.message);
                       }
