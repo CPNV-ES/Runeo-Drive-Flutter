@@ -68,6 +68,15 @@ class _Button extends StatelessWidget {
               ),
             ),
             PopupMenuItem<String>(
+              value: "mine",
+              child: Text(
+                "Show mine",
+                style: activeFilter == "mine"
+                    ? activeStyle
+                    : defaultStyle,
+              ),
+            ),
+            PopupMenuItem<String>(
               value: "drafting",
               child: Text(
                 "Show in progress",
