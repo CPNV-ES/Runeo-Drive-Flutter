@@ -33,20 +33,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoading();
 
       try {
-        final user = await _userRepository.authenticate(
+        final currentUser = await _userRepository.authenticate(
           key: event.token
         );
-        if (user != null) {
+        if (currentUser != null) {
           // push new authentication event
-          _authenticationBloc.add(LoggedIn(user: user));
+          _authenticationBloc.add(LoggedIn(user: currentUser));
           yield LoginSuccess();
           yield LoginInitial();
         } else {
           yield LoginFailure(error: 'Something very weird just happened');
         }
         yield LoginInitial();
-      } catch (error) {
-        yield LoginFailure(error: error.message ?? 'An unknown error occured');
+      } on Exception catch (err) {
+        yield LoginFailure(error: '$err' ?? 'An unknown error occured');
       }
     }
   }
