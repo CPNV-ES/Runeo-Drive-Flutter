@@ -33,7 +33,8 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   Future<User> getCurrentUser() async {
-    return await this.storage.getItem("currentUser");
+    var value = await this.storage.getItem("currentUser");
+    return User.fromJson(value);
   }
 
   Future<bool> isAuthenticated() async {
