@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 
 import 'package:RuneoDriverFlutter/models/index.dart';
 
+@immutable
 abstract class RunState extends Equatable {}
 
 class RunInitalState extends RunState {
@@ -17,13 +18,15 @@ class RunLoadingState extends RunState {
 
 class RunLoadedState extends RunState {
 	final List<Run> runs;
+  final String activeFilter;
 
 	RunLoadedState({
-		@required this.runs
-	}): assert(runs != null);
+		this.runs,
+    this.activeFilter
+	});
 
 	@override
-	List<Object> get props => [runs];
+	List<Object> get props => [runs, activeFilter];
 }
 
 class RunErrorState extends RunState {
@@ -32,6 +35,5 @@ class RunErrorState extends RunState {
   RunErrorState({@required this.message});
 
   @override
-  // TODO: implement props
   List<Object> get props => [message];
 }

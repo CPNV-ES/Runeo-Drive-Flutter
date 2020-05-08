@@ -8,7 +8,7 @@ import 'package:RuneoDriverFlutter/repository/user_repository.dart';
 import 'package:RuneoDriverFlutter/views/login/login_form.dart';
 
 import 'package:RuneoDriverFlutter/views/runs/runs_page.dart';
-import 'package:RuneoDriverFlutter/bloc/index.dart';
+import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
 import 'package:RuneoDriverFlutter/repository/run_repository.dart';
 
 import 'package:RuneoDriverFlutter/views/shared/loading_indicator.dart';

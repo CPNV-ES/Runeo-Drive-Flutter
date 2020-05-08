@@ -1,9 +1,10 @@
 import 'package:RuneoDriverFlutter/bloc/authentication/index.dart';
+import 'package:RuneoDriverFlutter/views/runs/widgets/filter_button.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:RuneoDriverFlutter/bloc/index.dart';
+import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
 import 'package:RuneoDriverFlutter/models/index.dart';
 import 'package:RuneoDriverFlutter/views/runs/widgets/run_list_item.dart';
 
@@ -33,6 +34,7 @@ class _RunsPageState extends State<RunsPage> {
 							appBar: AppBar(
 								title: (barcode != null) ? Text(barcode.rawContent) : Text("Runéo"),
 								actions: <Widget>[
+                  FilterButton(visible: true),
                   IconButton(
 										icon: Icon(Icons.exit_to_app),
 										onPressed: ()  {

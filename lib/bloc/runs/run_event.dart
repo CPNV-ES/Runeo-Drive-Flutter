@@ -10,3 +10,12 @@ class GetRunsEvent extends RunEvent {
 	@override
 	List<Object> get props => null;
 }
+
+class FilterUpdated extends RunEvent {
+  final String filter;
+
+  const FilterUpdated(this.filter);
+
+  @override
+  List<Object> get props => [filter];
+}

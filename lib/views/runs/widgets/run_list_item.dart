@@ -1,18 +1,12 @@
 import 'package:RuneoDriverFlutter/models/index.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 
 class RunListItem extends StatelessWidget {
   final Run run;
   final Function onTap;
   const RunListItem({this.run, this.onTap});
-  
-
-  void init() {
-    //initializeDateFormatting("fr_CH");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +42,11 @@ class RunListItem extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ) : '',
+                  Text(
+                    run.status,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   (run.recentlyUpdated != null) ?
                     Text(
                       "Maj",
