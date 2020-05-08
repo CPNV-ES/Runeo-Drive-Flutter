@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           if (state is AuthenticationAuthenticated) {
             return BlocProvider(
-              create: (context) => RunBloc(repository: RunRepositoryImpl()),
+              create: (context) => RunBloc(UserRepositoryImpl(), repository: RunRepositoryImpl()),
               child: RunsPage(),
             );
           }
