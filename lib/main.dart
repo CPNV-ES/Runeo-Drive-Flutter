@@ -90,10 +90,6 @@ class MyApp extends StatelessWidget {
           return SplashPage();
         }
       ),
-      // home: BlocProvider(
-      //   create: (context) => RunBloc(repository: RunRepositoryImpl()),
-      //   child: RunsPage(),
-      // ),
     );
   }
 }
