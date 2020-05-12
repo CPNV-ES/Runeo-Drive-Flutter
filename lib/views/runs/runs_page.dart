@@ -1,5 +1,6 @@
 import 'package:RuneoDriverFlutter/bloc/authentication/index.dart';
 import 'package:RuneoDriverFlutter/views/runs/widgets/filter_button.dart';
+import 'package:RuneoDriverFlutter/views/shared/loading_indicator.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +33,7 @@ class _RunsPageState extends State<RunsPage> {
 					return Material(
 						child: Scaffold(
 							appBar: AppBar(
-								title: (barcode != null) ? Text(barcode.rawContent) : Text("Runéo"),
+								title: Text("Runéo"),
 								actions: <Widget>[
                   FilterButton(visible: true),
                   IconButton(
@@ -63,17 +64,17 @@ class _RunsPageState extends State<RunsPage> {
 									child: BlocBuilder<RunBloc, RunState>(
 										builder: (context, state) {
 											if (state is RunInitalState) {
-                        return buildLoading();
+                        return LoadingIndicator();
                       } else if (state is RunLoadingState) {
-                        return buildLoading();
+                        return LoadingIndicator();
                       } else if (state is RunLoadedState) {
-                        if (state.runs != null) {
-                          return buildRunList(state.runs);
+                        if (state.runs != null && state.runs.length > 0) {
+                          return _buildRunList(state.runs);
                         } else {
-                          return Text('Aucune run disponible');
+                          return _buildNoDataView(context);
                         }
                       } else if (state is RunErrorState) {
-                        return buildErrorUi(state.message);
+                        return _buildErrorUi(state.message);
                       }
 										}
 									)
@@ -85,34 +86,22 @@ class _RunsPageState extends State<RunsPage> {
 			)
 		);
 	}
-
-  Future barcodeScanning() async {
-    try {
-      ScanResult barcode = await BarcodeScanner.scan();
-      setState(() => this.barcode = barcode);
-    } catch (e) {
-      if (e.code == BarcodeScanner.cameraAccessDenied) {
-        setState(() {
-          this.barcode = barcode.type as ScanResult;
-        });
-      } else {
-        setState(() => this.barcode = 'Unknown error: $e' as ScanResult);
-      }
-    } on FormatException {
-      setState(() => this.barcode = barcode.formatNote as ScanResult);
-    } catch (e) {
-      setState(() => this.barcode = 'Unknown error: $e' as ScanResult);
-    }
-  }
 }
 
-Widget buildLoading() {
-	return Center(
-    child: CircularProgressIndicator(),
-	);
-}
+Widget _buildNoDataView(BuildContext context) => Center(
+        child: Column(
+          children: <Widget>[
+            Text(
+              "No runs yet.",
+              style: TextStyle(
+                fontSize: 30.0,
+              ),
+            ),
+          ],
+        ),
+      );
 
-Widget buildErrorUi(String message) {
+Widget _buildErrorUi(String message) {
 	return Center(
 		child: Padding(
 			padding: const EdgeInsets.all(8.0),
@@ -124,7 +113,7 @@ Widget buildErrorUi(String message) {
 	);
 }
 
-Widget buildRunList(List<Run> runs) => ListView.builder(
+Widget _buildRunList(List<Run> runs) => ListView.builder(
 	itemCount: runs.length,
      itemBuilder: (context, index) => RunListItem(
       run: runs[index],
