@@ -1,3 +1,4 @@
+import 'package:RuneoDriverFlutter/enums/connectivity_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -7,6 +8,11 @@ abstract class RunEvent extends Equatable {
 }
 
 class GetRunsEvent extends RunEvent {
+	@override
+	List<Object> get props => null;
+}
+
+class GetRunsFromStorageEvent extends RunEvent {
 	@override
 	List<Object> get props => null;
 }
