@@ -1,4 +1,3 @@
-import 'package:RuneoDriverFlutter/bloc/connectivity/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -11,6 +10,7 @@ import 'package:RuneoDriverFlutter/views/login/login_form.dart';
 import 'package:RuneoDriverFlutter/views/runs/runs_page.dart';
 import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
 import 'package:RuneoDriverFlutter/repository/run_repository.dart';
+import 'package:RuneoDriverFlutter/bloc/connectivity/index.dart';
 
 import 'package:RuneoDriverFlutter/views/shared/loading_indicator.dart';
 import 'package:RuneoDriverFlutter/views/shared/splash_screen.dart';
@@ -85,10 +85,6 @@ class MyApp extends StatelessWidget {
               ], 
               child: RunsPage(),
             );
-            // return BlocProvider(
-            //   create: (context) =>  RunBloc(runRepository: RunRepositoryImpl()),
-            //   child: RunsPage(),
-            // );
           }
           if (state is AuthenticationUnauthenticated) {
             return BlocProvider(

@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:RuneoDriverFlutter/bloc/authentication/index.dart';
-import 'package:RuneoDriverFlutter/repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+
+import 'package:RuneoDriverFlutter/bloc/authentication/index.dart';
+import 'package:RuneoDriverFlutter/repository/user_repository.dart';
 import 'package:RuneoDriverFlutter/bloc/login/index.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {

@@ -1,6 +1,4 @@
-import 'package:RuneoDriverFlutter/models/index.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 abstract class ConnectivityState extends Equatable {
   const ConnectivityState();

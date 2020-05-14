@@ -1,4 +1,3 @@
-import 'package:RuneoDriverFlutter/enums/connectivity_status.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 

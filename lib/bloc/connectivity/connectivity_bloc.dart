@@ -1,8 +1,9 @@
 import 'dart:async';
+
+import 'package:connectivity/connectivity.dart';
 import 'package:meta/meta.dart';
 
 import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
-import 'package:RuneoDriverFlutter/enums/connectivity_status.dart';
 import 'package:bloc/bloc.dart';
 import 'package:RuneoDriverFlutter/bloc/connectivity/index.dart';
 
@@ -26,7 +27,7 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
   @override
   Stream<ConnectivityState> mapEventToState(ConnectivityEvent event) async* {
     if (event is GetStatusInfo){
-      if (event.result == ConnectivityStatus.Offline) {
+      if (event.result == ConnectivityResult.none) {
         _runBloc.add(GetRunsFromStorageEvent());
         yield ConnectivityOffline();
       } else {

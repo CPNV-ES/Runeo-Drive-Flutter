@@ -1,5 +1,4 @@
-import 'package:RuneoDriverFlutter/enums/connectivity_status.dart';
-import 'package:RuneoDriverFlutter/models/index.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
@@ -12,7 +11,7 @@ abstract class ConnectivityEvent extends Equatable {
 }
 
 class GetStatusInfo extends ConnectivityEvent {
-  final ConnectivityStatus result;
+  final ConnectivityResult result;
 
   GetStatusInfo({@required this.result});
 
