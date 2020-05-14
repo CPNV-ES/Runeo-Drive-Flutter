@@ -10,48 +10,50 @@ import 'package:RuneoDriverFlutter/repository/run_repository.dart';
 import 'package:RuneoDriverFlutter/models/index.dart';
 
 class RunBloc extends Bloc<RunEvent, RunState> {
-	final RunRepository runRepository;
+  final RunRepository runRepository;
   UserRepositoryImpl _userRepository = UserRepositoryImpl();
   LocalStorageRepositoryImpl _localStorageRepository = LocalStorageRepositoryImpl();
 
-	RunBloc({
-		@required this.runRepository
-	}): assert(runRepository != null);
+  RunBloc({
+    @required this.runRepository
+  }): assert(runRepository != null);
 
-	@override
-	RunState get initialState => RunInitalState();
+  @override
+  RunState get initialState => RunInitalState();
 
-	@override
-	Stream<RunState> mapEventToState(
-		RunEvent event,
-	) async* {
-		if (event is GetRunsEvent) {
+  @override
+  Stream<RunState> mapEventToState(
+    RunEvent event,
+  ) async* {
+    if (event is GetRunsEvent) {
       final List<Run> runs = await runRepository.getRuns();
-			yield RunLoadingState();
-			try {			
-				yield RunLoadedState(runs: runs);
-			} catch (e) {
-				yield RunErrorState(message: e.toString());
-			}
+      yield RunLoadingState();
+      yield OnlineState();
+      try {			
+        yield RunLoadedState(runs: runs);
+      } catch (e) {
+        yield RunErrorState(message: e.toString());
+      }
     } else if (event is GetRunsFromStorageEvent) {
       final List<Run> runs = await _localStorageRepository.getRunsFromStorage();
       yield RunLoadingState();
+      yield OfflineState();
       try {			
-				yield RunLoadedState(runs: runs);
-			} catch (e) {
-				yield RunErrorState(message: e.toString());
-			}
-		} else if (event is FilterUpdated) {
+        yield RunLoadedState(runs: runs);
+      } catch (e) {
+        yield RunErrorState(message: e.toString());
+      }
+    } else if (event is FilterUpdated) {
       yield RunLoadingState();
-			try {
+      try {
         final User user = await _userRepository.getCurrentUser();
         final List<Run> runs = await _localStorageRepository.getRunsFromStorage();
-				yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, event.filter, user), activeFilter: event.filter);
-			} catch (e) {
-				yield RunErrorState(message: e.toString());
-			}
+        yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, event.filter, user), activeFilter: event.filter);
+      } catch (e) {
+        yield RunErrorState(message: e.toString());
+      }
     }
-	}
+  }
 
   List<Run> _mapRunsToFilteredRuns(
     List<Run> runs, String filter, User user) {
