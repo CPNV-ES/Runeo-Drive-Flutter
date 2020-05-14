@@ -15,6 +15,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     _onLoginButtonPressed() {
+      // Needs to be changed, token hardcoded for now
       //userRepository.barcodeScanning().then((value) =>
         BlocProvider.of<LoginBloc>(context).add(
           LoginInButtonPressed(

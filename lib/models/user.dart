@@ -32,10 +32,10 @@ class User extends Equatable {
     this.hasNotificationToken = hasNotificationToken;
   }
 
-	@override
+  @override
   List<Object> get props => [id, name, firstname, lastname, email, imageProfile, phoneNumber, hasNotificationToken];
 
-	String get fullname => '$firstname $lastname';
+  String get fullname => '$firstname $lastname';
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];

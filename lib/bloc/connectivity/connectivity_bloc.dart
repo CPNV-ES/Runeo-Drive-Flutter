@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:meta/meta.dart';
+import 'package:bloc/bloc.dart';
 
 import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
-import 'package:bloc/bloc.dart';
 import 'package:RuneoDriverFlutter/bloc/connectivity/index.dart';
 
 class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
@@ -29,10 +29,8 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
     if (event is GetStatusInfo){
       if (event.result == ConnectivityResult.none) {
         _runBloc.add(GetRunsFromStorageEvent());
-        yield ConnectivityOffline();
       } else {
         _runBloc.add(GetRunsEvent());
-        yield ConnectivityOnline();
       }
     } 
   }

@@ -15,6 +15,6 @@ class GetStatusInfo extends ConnectivityEvent {
 
   GetStatusInfo({@required this.result});
 
-	@override
-	List<Object> get props => null;
+  @override
+  List<Object> get props => null;
 }

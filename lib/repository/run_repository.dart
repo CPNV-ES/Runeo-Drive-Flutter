@@ -4,21 +4,21 @@ import 'package:RuneoDriverFlutter/repository/local_storage_repository.dart';
 
 
 abstract class RunRepository {
-	Future<List<Run>> getRuns();
+  Future<List<Run>> getRuns();
 }
 
 class RunRepositoryImpl implements RunRepository {
-	ApiProvider _provider = ApiProvider();
+  ApiProvider _provider = ApiProvider();
   LocalStorageRepositoryImpl _localStorageRepository = LocalStorageRepositoryImpl();
 
-	Future<List<Run>> getRuns() async {
-		final List<Run> runs = [];
+  Future<List<Run>> getRuns() async {
+    final List<Run> runs = [];
     var response = await _provider.getRuns();
     response.forEach((run) {
       runs.add(Run.fromJson(run));
     });
     _localStorageRepository.saveToStorage("runs", response);
-		
-		return runs;
-	}
+    
+    return runs;
+  }
 }

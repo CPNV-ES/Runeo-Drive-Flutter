@@ -36,6 +36,7 @@ dependencies:
   barcode_scan: ^3.0.0
   localstorage: ^3.0.0
   connectivity: '>=0.4.8+6 <2.0.0'
+  flushbar: ^1.10.2
 
 dev_dependencies:
   flutter_test:

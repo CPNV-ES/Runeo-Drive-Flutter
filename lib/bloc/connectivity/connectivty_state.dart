@@ -8,7 +8,3 @@ abstract class ConnectivityState extends Equatable {
 }
 
 class ConnectivityInitial extends ConnectivityState {}
-
-class ConnectivityOnline extends ConnectivityState {}
-
-class ConnectivityOffline extends ConnectivityState {}
