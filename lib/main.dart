@@ -1,3 +1,4 @@
+import 'package:RuneoDriverFlutter/bloc/connectivity/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -73,10 +74,21 @@ class MyApp extends StatelessWidget {
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (state is AuthenticationAuthenticated) {
-            return BlocProvider(
-              create: (context) => RunBloc(UserRepositoryImpl(), repository: RunRepositoryImpl()),
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider<RunBloc>(
+                  create: (context) => RunBloc(runRepository: RunRepositoryImpl()),
+                ),
+                BlocProvider<ConnectivityBloc>(
+                  create: (context) => ConnectivityBloc(runBloc: BlocProvider.of<RunBloc>(context) )
+                ),
+              ], 
               child: RunsPage(),
             );
+            // return BlocProvider(
+            //   create: (context) =>  RunBloc(runRepository: RunRepositoryImpl()),
+            //   child: RunsPage(),
+            // );
           }
           if (state is AuthenticationUnauthenticated) {
             return BlocProvider(
