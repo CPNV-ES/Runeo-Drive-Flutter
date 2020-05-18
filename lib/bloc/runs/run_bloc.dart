@@ -29,17 +29,14 @@ class RunBloc extends Bloc<RunEvent, RunState> {
       final List<Run> runs = await runRepository.getRuns();
       yield RunLoadingState();
       yield OnlineState();
-      try {			
+      try {
         yield RunLoadedState(runs: runs);
       } catch (e) {
         yield RunErrorState(message: e.toString());
       }
     } else if (event is GetRunsFromStorageEvent) {
-      final List<Run> runs = await _localStorageRepository.getRunsFromStorage();
-      yield RunLoadingState();
-      yield OfflineState();
-      try {			
-        yield RunLoadedState(runs: runs);
+      try {
+        yield OfflineState();
       } catch (e) {
         yield RunErrorState(message: e.toString());
       }
@@ -60,13 +57,12 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     if (filter == "all") {
       return runs;
     } else if (filter == "mine") {
-      runs.forEach((run) { 
+      runs.forEach((run) {
         return run.runners.where((runner) => runner.user != null && runner.user.id == user.id).toList();
-      });      
+      });
     } else {
       return runs.where((run) => run.status == filter).toList();
     }
-    //return runs;
   }
 
   @override
