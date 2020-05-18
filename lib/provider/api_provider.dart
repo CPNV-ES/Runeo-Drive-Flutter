@@ -57,4 +57,27 @@ class ApiProvider {
       }
     }
   }
+
+  Future<dynamic> getUserRuns() async {
+    final value = await this.storage.getItem("token");
+    try {
+      var response = await http.get(
+      '$_baseUrl/me/runs',
+      headers: {
+        HttpHeaders.contentTypeHeader: "application/json", 
+        HttpHeaders.authorizationHeader: "Bearer $value"
+      });
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data;
+      } else {
+        throw Exception('error fetching data');
+      }
+    } catch (e, stackTrace) {
+      if (e is SocketException) {
+        throw Exception('No internet connection');
+      }
+    }
+  }
 }

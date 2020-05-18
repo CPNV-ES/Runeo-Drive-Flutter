@@ -43,9 +43,9 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     } else if (event is FilterUpdated) {
       yield RunLoadingState();
       try {
-        final User user = await _userRepository.getCurrentUser();
         final List<Run> runs = await _localStorageRepository.getRunsFromStorage();
-        yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, event.filter, user), activeFilter: event.filter);
+        final List<Run> currentUserRuns = await runRepository.getUserRuns();
+        yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, currentUserRuns, event.filter), activeFilter: event.filter);
       } catch (e) {
         yield RunErrorState(message: e.toString());
       }
@@ -53,13 +53,11 @@ class RunBloc extends Bloc<RunEvent, RunState> {
   }
 
   List<Run> _mapRunsToFilteredRuns(
-    List<Run> runs, String filter, User user) {
+    List<Run> runs, List<Run> currentUserRuns, String filter) {
     if (filter == "all") {
       return runs;
     } else if (filter == "mine") {
-      runs.forEach((run) {
-        return run.runners.where((runner) => runner.user != null && runner.user.id == user.id).toList();
-      });
+      return currentUserRuns;
     } else {
       return runs.where((run) => run.status == filter).toList();
     }
