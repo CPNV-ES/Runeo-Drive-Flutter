@@ -3,12 +3,17 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class RunEvent extends Equatable {
-	const RunEvent();
+  const RunEvent();
 }
 
 class GetRunsEvent extends RunEvent {
-	@override
-	List<Object> get props => null;
+  @override
+  List<Object> get props => null;
+}
+
+class GetRunsFromStorageEvent extends RunEvent {
+  @override
+  List<Object> get props => null;
 }
 
 class FilterUpdated extends RunEvent {

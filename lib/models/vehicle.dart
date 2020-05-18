@@ -64,7 +64,7 @@ class Vehicle extends Equatable {
     data['gaslevel'] = this.gasLevel;
     data['nbplace'] = this.nbPlace;
     data['status'] = this.status;
-		if (this.user != null) {
+    if (this.user != null) {
       data['user'] = this.user.toJson();
     }
     if (this.type != null) {

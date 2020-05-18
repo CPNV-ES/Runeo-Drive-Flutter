@@ -1,8 +1,8 @@
-import 'package:RuneoDriverFlutter/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:RuneoDriverFlutter/bloc/login/index.dart';
+import 'package:RuneoDriverFlutter/repository/user_repository.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -15,6 +15,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     _onLoginButtonPressed() {
+      // Needs to be changed, token hardcoded for now
       //userRepository.barcodeScanning().then((value) =>
         BlocProvider.of<LoginBloc>(context).add(
           LoginInButtonPressed(

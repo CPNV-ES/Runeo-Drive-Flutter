@@ -34,9 +34,9 @@ class Runner extends Equatable {
       data['user'] = this.user.toJson();
     }
     
-		if (this.vehicleCategory != null) {
-			data['vehiclecategory'] = this.vehicleCategory.toJson();
-		}
+    if (this.vehicleCategory != null) {
+      data['vehiclecategory'] = this.vehicleCategory.toJson();
+    }
     if (this.vehicle != null) {
       data['vehicle'] = this.vehicle.toJson();
     }
