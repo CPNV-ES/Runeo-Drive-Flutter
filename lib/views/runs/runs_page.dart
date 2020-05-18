@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flushbar/flushbar.dart';
 
 import 'package:RuneoDriverFlutter/bloc/authentication/index.dart';
 import 'package:RuneoDriverFlutter/views/runs/widgets/filter_button.dart';
@@ -23,6 +22,7 @@ class _RunsPageState extends State<RunsPage> {
   RunBloc _runBloc;
   ConnectivityBloc _connectivityBloc;
   StreamSubscription<ConnectivityResult> _subscription;
+  Color backgroundColor;
 
   @override
   void initState() {
@@ -38,6 +38,8 @@ class _RunsPageState extends State<RunsPage> {
   @override
   dispose() {
     super.dispose();
+    _runBloc.close();
+    _connectivityBloc.close();
     _subscription.cancel();
   }
 
@@ -50,6 +52,7 @@ class _RunsPageState extends State<RunsPage> {
             child: Scaffold(
               appBar: AppBar(
                 title: Text("Runéo"),
+                backgroundColor: backgroundColor,
                 actions: <Widget>[
                   FilterButton(visible: true),
                   IconButton(
@@ -70,10 +73,21 @@ class _RunsPageState extends State<RunsPage> {
                         )
                       );
                     } else if (state is OfflineState) {
-                      _showFlushBar(context, "Offline", Colors.grey, Colors.redAccent, false, true);
+                      setState(() {
+                          backgroundColor = Colors.red;
+                      });
                     } else if (state is OnlineState) {
-                      _showFlushBar(context, "Online", Colors.grey, Colors.green, true, false);
+                      setState(() {
+                          backgroundColor = Colors.blue;
+                      });
                     }
+                  },
+                  buildWhen: (previous, current) {
+                   if (current is OfflineState) {
+                     return false;
+                   } else {
+                     return true;
+                   }
                   },
                   builder: (context, state) {
                     if (state is RunInitalState) {
@@ -114,32 +128,9 @@ Widget _buildNoDataView(BuildContext context) => Center(
   ),
 );
 
-Widget _buildErrorUi(String message) {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-        message,
-        style: TextStyle(color: Colors.red),
-      ),
-    ),
-  );
-}
-
 Widget _buildRunList(List<Run> runs) => ListView.builder(
   itemCount: runs.length,
      itemBuilder: (context, index) => RunListItem(
       run: runs[index],
      )
   );
-
-Widget _showFlushBar(BuildContext context, String message, Color progressColor, Color backgroundColor, bool isDismissible, bool showProgress) {
-  return Flushbar(
-    message: message,
-    isDismissible: isDismissible,
-    backgroundColor: backgroundColor,
-    showProgressIndicator: showProgress,
-    progressIndicatorBackgroundColor: progressColor,
-    duration: Duration(seconds: 3),
-  )..show(context);
-}
