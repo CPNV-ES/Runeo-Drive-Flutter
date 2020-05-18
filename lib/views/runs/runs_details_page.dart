@@ -11,6 +11,7 @@ class RunsDetailPage extends StatelessWidget {
   }): super(key: key);
   @override
   Widget build(BuildContext context) {
+    User user = User();
     final levelIndicator = Container(
       child: Container(
         child: Icon(
@@ -31,27 +32,28 @@ class RunsDetailPage extends StatelessWidget {
           size: 30.0,
         ),
         Container(
-          width: 100.0,
+          width: 200.0,
           child: new Divider(color: Colors.green),
         ),
         SizedBox(height: 20.0),
+        Expanded(flex: 3,child: 
         Text(
           run.title,
-          style: TextStyle(color: Colors.white, fontSize: 35.0),
+          style: TextStyle(color: Colors.white, fontSize: 30.0),
         ),
-        SizedBox(height: 23.0),
+        ),        
+        SizedBox(height: 13.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget> [
             Expanded(flex: 1, child: levelIndicator),
             Expanded(
-              flex: 6,
+              flex: 8,
               child: Padding(
                 padding: EdgeInsets.only(left: 10.0),
-                child: Text(
-                  run.nbPassenger.toString(),
-                  style: TextStyle(color: Colors.white),
-                ))),
+                child: (run.nbPassenger != null) ? Text(run.nbPassenger.toString(), style: TextStyle(color: Colors.white)) : Text("0", style: TextStyle(color: Colors.white)),
+              )
+            )
           ],
         ),
       ],
@@ -88,30 +90,35 @@ class RunsDetailPage extends StatelessWidget {
     final bottomContentText = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget> [
-        Row(
-          children: [
-            Icon(
-              Icons.access_time,
-              color: Colors.black,
-              size: 30.0,
-            ),
-            SizedBox(width: 10.0),
-            Text(
-              (run.beginAt != null) ? DateFormat('EEEE à HH:mm', 'fr_CH').format(DateTime.parse(run.beginAt)) : '-',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(width: 20.0),
-            Icon(
-              Icons.access_time,
-              color: Colors.black,
-              size: 30.0,
-            ),
-            SizedBox(width: 10.0),
-            Text(
-              (run.endAt != null) ? DateFormat('EEEE à HH:mm', 'fr_CH').format(DateTime.parse(run.endAt)) : "-",
-              style: TextStyle(fontSize: 18.0),
-            ),
-          ],
+        Container(
+          width: 350.0,
+          child: Row(
+            children: [
+              Icon(
+                Icons.access_time,
+                color: Colors.black,
+                size: 30.0,
+              ),
+              SizedBox(width: 10.0),
+              Text(
+                (run.beginAt != null) ? DateFormat('EEEE à HH:mm', 'fr_CH').format(DateTime.parse(run.beginAt)) : '-',
+                style: TextStyle(fontSize: 18.0),
+              ),
+              SizedBox(width: 20.0),
+              Icon(
+                Icons.access_time,
+                color: Colors.black,
+                size: 30.0,
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: Text(
+                (run.endAt != null) ? DateFormat('EEEE à HH:mm', 'fr_CH').format(DateTime.parse(run.endAt)) : "-",
+                style: TextStyle(fontSize: 18.0),
+                ),
+              )
+            ],
+          ),
         ),
         Row(
           children: [
@@ -127,10 +134,7 @@ class RunsDetailPage extends StatelessWidget {
             Expanded(
               child: Container(
                 margin: EdgeInsets.only(top: 20.0),
-                child : Text(
-                  run.runinfo,
-                  style: TextStyle(fontSize: 18.0),
-                ),
+                child : (run.runinfo != null) ? Text(run.runinfo, style: TextStyle(fontSize: 18.0)) : Text("-", style: TextStyle(fontSize: 18.0)),
               )
             ),
           ],
@@ -141,11 +145,11 @@ class RunsDetailPage extends StatelessWidget {
       margin: EdgeInsets.only(top: 100.0),
       width: MediaQuery.of(context).size.width,
       child: RaisedButton(
-        onPressed: () => {},
+        onPressed: (user.isBelongingToSomeone(run)) ? null : () => {},
         color: Color.fromRGBO(58, 66, 86, 1.0),
-        child:
-        Text("TAKE THIS RUN", style: TextStyle(color: Colors.white)),
-      ));
+        child: (user.isBelongingToSomeone(run)) ? Text("ALREADY TAKEN", style: TextStyle(color: Colors.white)) : Text("TAKE THIS RUN", style: TextStyle(color: Colors.white)),
+      )
+    );
     final bottomContent = Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(40.0),

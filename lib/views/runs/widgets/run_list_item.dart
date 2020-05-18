@@ -1,4 +1,3 @@
-import 'package:RuneoDriverFlutter/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -15,7 +14,7 @@ class RunListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserRepositoryImpl userRepository = UserRepositoryImpl();
+    User user = User();
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -30,7 +29,7 @@ class RunListItem extends StatelessWidget {
           leading: DecoratedBox(
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              color: (userRepository.belongsToUser(run)) ? Colors.red : Colors.green,
+              color: (user.isBelongingToSomeone(run)) ? Colors.red : Colors.green,
             ),
             child: Padding(
               padding: EdgeInsets.all(15.0),

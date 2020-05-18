@@ -24,8 +24,9 @@ class UserRepositoryImpl implements UserRepository {
     _localStorageRepository.saveToStorage("token", key);
     final response = await _provider.getUser();
     if (response != null) {
-      _localStorageRepository.saveToStorage("currentUser", User.fromJson(response));
-      return User.fromJson(response);
+      final User user = User.fromJson(response);
+      _localStorageRepository.saveToStorage("currentUser", user);      
+      return user;
     }
     return response;
   }

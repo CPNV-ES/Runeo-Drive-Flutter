@@ -1,3 +1,4 @@
+import 'package:RuneoDriverFlutter/models/index.dart';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
@@ -61,5 +62,9 @@ class User extends Equatable {
     data['image_profile'] = this.imageProfile;
     data['has_notification_token'] = this.hasNotificationToken;
     return data;
+  }
+
+  bool isBelongingToSomeone(Run run) {
+    return !run.runners.any((runner) => runner.user != null);
   }
 }

@@ -85,8 +85,6 @@ class _RunsPageState extends State<RunsPage> {
                   buildWhen: (previous, current) {
                    if (current is OfflineState) {
                      return false;
-                   } else {
-                     return true;
                    }
                   },
                   builder: (context, state) {
