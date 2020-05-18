@@ -19,8 +19,7 @@ class FilterButton extends StatelessWidget {
       .copyWith(color: Theme.of(context).accentColor);
     final RunBloc runBloc =
       BlocProvider.of <RunBloc> (context);
-    return BlocBuilder(
-      bloc: runBloc,
+    return BlocBuilder<RunBloc, RunState>(
       builder: (BuildContext context, RunState state) {
         final button = _Button(
           onSelected: (filter) {
