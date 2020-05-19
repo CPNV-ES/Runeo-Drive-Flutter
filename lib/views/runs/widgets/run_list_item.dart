@@ -14,7 +14,6 @@ class RunListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    User user = User();
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -29,7 +28,7 @@ class RunListItem extends StatelessWidget {
           leading: DecoratedBox(
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              color: (user.isBelongingToSomeone(run)) ? Colors.red : Colors.green,
+              color: (run.isBelongingToSomeone(run)) ? Colors.red : Colors.green,
             ),
             child: Padding(
               padding: EdgeInsets.all(15.0),

@@ -19,7 +19,7 @@ class _LoginFormState extends State<LoginForm> {
       //userRepository.barcodeScanning().then((value) =>
         BlocProvider.of<LoginBloc>(context).add(
           LoginInButtonPressed(
-            token: "DCi7OOcH9LdXjXZpXTkyjjXgezHbInsDRRR8504tpRmqPvC9KLUQfFhXCmPS",
+            token: "S114eYmlUVsXuJ1vf0iJhAF4LKDxM3q7yl2hN5ardbjEgMvtA9v1xqCeOWcZ",
           ),
         );
       //);     
