@@ -3,6 +3,7 @@ import 'package:RuneoDriverFlutter/provider/api_provider.dart';
 
 abstract class LocalStorageRepository {
   Future<dynamic> getRunsFromStorage();
+  Future<dynamic> getUserRunsFromStorage();
   Future<void> deleteFromStorage(String key);
   Future<void> saveToStorage(String key, dynamic value);
 }
@@ -13,6 +14,15 @@ class LocalStorageRepositoryImpl implements LocalStorageRepository {
   Future<dynamic> getRunsFromStorage() async {
     final List<Run> runs = [];
     var response = await _provider.storage.getItem("runs");
+    response.forEach((run) {
+      runs.add(Run.fromJson(run));
+    });
+    return runs;
+  }
+
+  Future<dynamic> getUserRunsFromStorage() async {
+    final List<Run> runs = [];
+    var response = await _provider.storage.getItem("userRuns");
     response.forEach((run) {
       runs.add(Run.fromJson(run));
     });
