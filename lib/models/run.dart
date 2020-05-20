@@ -9,7 +9,7 @@ class Run extends Equatable {
   String title;
   String beginAt;
   String startAt;
-  List<String> updatedAt;
+  dynamic updatedAt;
   int paxTbc;
   int timeTbc;
   String endAt;
@@ -31,7 +31,7 @@ class Run extends Equatable {
       String title,
       String beginAt,
       String startAt,
-      List<String> updatedAt,
+      dynamic updatedAt,
       int paxTbc,
       int timeTbc,
       String endAt,
@@ -51,7 +51,7 @@ class Run extends Equatable {
     this.title = title;
     this.beginAt = beginAt;
     this.startAt = startAt ?? null;
-    this.updatedAt = updatedAt;
+    this.updatedAt = updatedAt ?? null;
     this.paxTbc = paxTbc;
     this.timeTbc = timeTbc;
     this.endAt = endAt ?? null;
@@ -80,9 +80,7 @@ class Run extends Equatable {
     title = json['title'];
     beginAt = json['begin_at'];
     startAt = json['start_at'];
-    if (json['updated_at'] != null) {
-      new List<String>.from(json['updated_at']);
-    }
+    updatedAt = json['updated_at'];
     paxTbc = json['pax_tbc'];
     timeTbc = json['time_tbc'];
     endAt = json['end_at'];
@@ -114,9 +112,7 @@ class Run extends Equatable {
     data['title'] = this.title;
     data['begin_at'] = this.beginAt;
     data['start_at'] = this.startAt;
-    if (this.updatedAt != null) {
-      data['updated_at'] = this.updatedAt;
-    }
+    data['updated_at'] = this.updatedAt;
     data['pax_tbc'] = this.paxTbc;
     data['time_tbc'] = this.timeTbc;
     data['end_at'] = this.endAt;
@@ -134,5 +130,9 @@ class Run extends Equatable {
       data['runners'] = this.runners.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  bool isBelongingToSomeone(Run run) {
+    return run.runners.any((runner) => runner.user != null);
   }
 }
