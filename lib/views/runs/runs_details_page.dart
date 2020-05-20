@@ -16,7 +16,6 @@ class RunsDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //var runUpdated = List<String>.from(run.updatedAt);
     final levelIndicator = Container(
       child: Container(
         child: Icon(
@@ -27,7 +26,7 @@ class RunsDetailPage extends StatelessWidget {
       ),
     );
 
-    final topContentText = Column(
+    Widget topContentText(Run run) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget> [
         SizedBox(height: 60.0),
@@ -64,7 +63,7 @@ class RunsDetailPage extends StatelessWidget {
       ],
     );
 
-    final topContent = Stack(
+    Widget topContent(Run run) => Stack(
       children: <Widget> [
         Container(
           padding: EdgeInsets.only(left: 50.0),
@@ -76,7 +75,7 @@ class RunsDetailPage extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
           child: Center(
-            child: topContentText,
+            child: topContentText(run),
           ),
         ),
         Positioned(
@@ -84,10 +83,7 @@ class RunsDetailPage extends StatelessWidget {
           top: 40.0,
           child: InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RunsPage()),
-              );
+              Navigator.pop(context);
             },
             child: Icon(Icons.arrow_back, color: Colors.white),
           ),
@@ -95,7 +91,7 @@ class RunsDetailPage extends StatelessWidget {
       ],
     );
 
-    final bottomContentText = Column(
+    Widget bottomContentText(Run run) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget> [
         Container(
@@ -150,7 +146,7 @@ class RunsDetailPage extends StatelessWidget {
       ],
     );
 
-    final readButton = Container(
+    Widget readButton(Run run) => Container(
       margin: EdgeInsets.only(top: 100.0),
       width: MediaQuery.of(context).size.width,
       child: RaisedButton(
@@ -159,13 +155,13 @@ class RunsDetailPage extends StatelessWidget {
         child: (run.isBelongingToSomeone(run)) ? Text("ALREADY TAKEN", style: TextStyle(color: Colors.white)) : Text("TAKE THIS RUN", style: TextStyle(color: Colors.white)),
       )
     );
-    
-    final bottomContent = Container(
+
+    Widget bottomContent(Run run) => Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(40.0),
       child: Center(
         child: Column(
-          children: <Widget> [bottomContentText, readButton],
+          children: <Widget> [bottomContentText(run), readButton(run)],
         ),
       ),
     );
@@ -189,13 +185,12 @@ class RunsDetailPage extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is AddRunnerSuccessState) {
-            BlocProvider.of<RunBloc>(context).add(GetRunsEvent());
             return ListView(
-              children: <Widget> [topContent, bottomContent],
+              children: <Widget> [topContent(state.run), bottomContent(state.run)],
             );
           }
           return ListView(
-            children: <Widget> [topContent, bottomContent],
+            children: <Widget> [topContent(run), bottomContent(run)],
           );
         }
       )
