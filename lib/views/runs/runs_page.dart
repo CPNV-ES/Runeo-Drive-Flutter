@@ -23,12 +23,15 @@ class _RunsPageState extends State<RunsPage> {
   ConnectivityBloc _connectivityBloc;
   StreamSubscription<ConnectivityResult> _subscription;
   Color backgroundColor;
+  bool loading = true;
+  Completer <void> _refreshCompleter;
 
   @override
   void initState() {
     super.initState();
     _runBloc = BlocProvider.of<RunBloc>(context);
-    _connectivityBloc = BlocProvider.of<ConnectivityBloc>(context);    
+    _connectivityBloc = BlocProvider.of<ConnectivityBloc>(context);
+    _refreshCompleter = Completer<void>();
     _subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       // Got a new connectivity status!
       _connectivityBloc.add(GetStatusInfo(result: result));
@@ -53,18 +56,18 @@ class _RunsPageState extends State<RunsPage> {
               appBar: AppBar(
                 title: Text("Runéo"),
                 backgroundColor: backgroundColor,
-                actions: <Widget>[
+                actions: <Widget> [
                   FilterButton(visible: true),
                   IconButton(
                     icon: Icon(Icons.exit_to_app),
-                    onPressed: ()  {
+                    onPressed: () {
                       BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
                     },
                   ),
                 ]
               ),
               body: Container(
-                child: BlocConsumer<RunBloc, RunState>(
+                child: BlocConsumer<RunBloc, RunState> (
                   listener: (context, state) {
                     if (state is RunErrorState) {
                       Scaffold.of(context).showSnackBar(
@@ -72,22 +75,28 @@ class _RunsPageState extends State<RunsPage> {
                           content: Text(state.message),
                         )
                       );
+                    } else if (state is RunLoadedState) {
+                      _refreshCompleter?.complete();
+                      _refreshCompleter = Completer();
                     } else if (state is OfflineState) {
                       setState(() {
-                          backgroundColor = Colors.red;
+                        loading = false;
+                        backgroundColor = Colors.red;
                       });
                     } else if (state is OnlineState) {
                       setState(() {
-                          backgroundColor = Colors.blue;
+                        loading = true;
+                        backgroundColor = Colors.blue;
                       });
                     }
                   },
                   buildWhen: (previous, current) {
-                   if (current is OfflineState) {
-                     return false;
-                   } else {
-                     return true;
-                   }
+                    if (current is OfflineState && previous is RunLoadedState) {
+                      return false;
+                    }
+                    if (current is AddRunnerSuccessState) {
+                      return false;
+                    }
                   },
                   builder: (context, state) {
                     if (state is RunInitalState) {
@@ -96,13 +105,25 @@ class _RunsPageState extends State<RunsPage> {
                       return LoadingIndicator();
                     } else if (state is RunLoadedState) {
                       if (state.runs != null && state.runs.isNotEmpty) {
-                        return _buildRunList(state.runs);
+                        if (loading) {
+                          return RefreshIndicator(
+                            child: _buildRunList(state.runs), 
+                            onRefresh: () {
+                              _runBloc.add(GetRunsEvent()); 
+                              return _refreshCompleter.future; 
+                            }
+                          );
+                        } else {
+                          return _buildRunList(state.runs);
+                        }
                       } else {
                         return _buildNoDataView(context);
                       }
+                    } else if (state is RunErrorState) {
+                      return _buildErrorUi(state.message);
                     } else {
                       return Container();
-                    }                    
+                    }
                   }
                 )
               )
@@ -117,7 +138,7 @@ class _RunsPageState extends State<RunsPage> {
 Widget _buildNoDataView(BuildContext context) => Center(
   child: Column(
     mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
+    children: <Widget> [
       Text(
         "No runs yet.",
         style: TextStyle(
@@ -128,9 +149,21 @@ Widget _buildNoDataView(BuildContext context) => Center(
   ),
 );
 
+Widget _buildErrorUi(String message) {
+	return Center(
+		child: Padding(
+			padding: const EdgeInsets.all(8.0),
+			child: Text(
+				message,
+				style: TextStyle(color: Colors.red),
+			),
+		),
+	);
+}
+
 Widget _buildRunList(List<Run> runs) => ListView.builder(
   itemCount: runs.length,
-     itemBuilder: (context, index) => RunListItem(
-      run: runs[index],
-     )
-  );
+  itemBuilder: (context, index) => RunListItem(
+    run: runs[index],
+  )
+);

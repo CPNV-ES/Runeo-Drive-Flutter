@@ -40,26 +40,41 @@ class RunBloc extends Bloc<RunEvent, RunState> {
       } catch (e) {
         yield RunErrorState(message: e.toString());
       }
+    } else if (event is TakeARun) {
+      try {
+        final Run run = await runRepository.assignRunner(event.runner, event.updated_at);
+        if (run != null) {
+          yield AddRunnerSuccessState(run, message: "Successfully added runner to " + event.run.title + " run");
+        } else {
+          yield AddRunnerSuccessState(run, message: "Error when adding a runner to " + event.run.title);
+        }
+
+      } catch (e) {
+        yield RunErrorState(message: e.toString());
+        yield OfflineState();
+      }
     } else if (event is FilterUpdated) {
       yield RunLoadingState();
       try {
-        final User user = await _userRepository.getCurrentUser();
-        final List<Run> runs = await _localStorageRepository.getRunsFromStorage();
-        yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, event.filter, user), activeFilter: event.filter);
+        final List<Run> runs = await runRepository.getRuns();
+        final List<Run> currentUserRuns = await runRepository.getUserRuns();
+        yield OnlineState();
+        yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, currentUserRuns, event.filter), activeFilter: event.filter);
       } catch (e) {
-        yield RunErrorState(message: e.toString());
+        final List<Run> runs = await _localStorageRepository.getRunsFromStorage();
+        final List<Run> currentUserRuns = await _localStorageRepository.getUserRunsFromStorage();
+        yield OfflineState();
+        yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, currentUserRuns, event.filter), activeFilter: event.filter);
       }
     }
   }
 
   List<Run> _mapRunsToFilteredRuns(
-    List<Run> runs, String filter, User user) {
+    List<Run> runs, List<Run> currentUserRuns, String filter) {
     if (filter == "all") {
       return runs;
     } else if (filter == "mine") {
-      runs.forEach((run) {
-        return run.runners.where((runner) => runner.user != null && runner.user.id == user.id).toList();
-      });
+      return currentUserRuns;
     } else {
       return runs.where((run) => run.status == filter).toList();
     }
