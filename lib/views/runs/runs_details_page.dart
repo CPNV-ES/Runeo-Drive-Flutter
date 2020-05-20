@@ -1,17 +1,22 @@
+import 'package:RuneoDriverFlutter/views/runs/runs_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import 'package:RuneoDriverFlutter/models/index.dart';
+import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
 
 class RunsDetailPage extends StatelessWidget {
-  final Run run;
+  Run run;
+
   RunsDetailPage({
     Key key,
     this.run
   }): super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    User user = User();
+    //var runUpdated = List<String>.from(run.updatedAt);
     final levelIndicator = Container(
       child: Container(
         child: Icon(
@@ -79,7 +84,10 @@ class RunsDetailPage extends StatelessWidget {
           top: 40.0,
           child: InkWell(
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RunsPage()),
+              );
             },
             child: Icon(Icons.arrow_back, color: Colors.white),
           ),
@@ -140,16 +148,18 @@ class RunsDetailPage extends StatelessWidget {
           ],
         ),
       ],
-    );   
+    );
+
     final readButton = Container(
       margin: EdgeInsets.only(top: 100.0),
       width: MediaQuery.of(context).size.width,
       child: RaisedButton(
-        onPressed: (user.isBelongingToSomeone(run)) ? null : () => {},
+        onPressed: (run.isBelongingToSomeone(run)) ? null : () => { BlocProvider.of<RunBloc>(context).add(TakeARun(run, run.runners, DateFormat('y-MM-ddTHH:mm:ss', 'fr_CH').format(DateTime.parse("2020-05-19 09:54:50")))) },
         color: Color.fromRGBO(58, 66, 86, 1.0),
-        child: (user.isBelongingToSomeone(run)) ? Text("ALREADY TAKEN", style: TextStyle(color: Colors.white)) : Text("TAKE THIS RUN", style: TextStyle(color: Colors.white)),
+        child: (run.isBelongingToSomeone(run)) ? Text("ALREADY TAKEN", style: TextStyle(color: Colors.white)) : Text("TAKE THIS RUN", style: TextStyle(color: Colors.white)),
       )
     );
+    
     final bottomContent = Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(40.0),
@@ -161,9 +171,34 @@ class RunsDetailPage extends StatelessWidget {
     );
 
     return Scaffold(
-      body: ListView(
-        children: <Widget> [topContent, bottomContent],
-      ),
+      body: BlocConsumer<RunBloc, RunState>(
+        listener: (context, state) {
+          if (state is AddRunnerSuccessState) {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+              )
+            );
+          } else if (state is RunErrorState) {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+              )
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is AddRunnerSuccessState) {
+            BlocProvider.of<RunBloc>(context).add(GetRunsEvent());
+            return ListView(
+              children: <Widget> [topContent, bottomContent],
+            );
+          }
+          return ListView(
+            children: <Widget> [topContent, bottomContent],
+          );
+        }
+      )
     );
   }
 }
