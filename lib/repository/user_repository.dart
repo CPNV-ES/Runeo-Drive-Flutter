@@ -17,6 +17,7 @@ class UserRepositoryImpl implements UserRepository {
   ScanResult barcode;
   ApiProvider _provider = ApiProvider();
   LocalStorageRepositoryImpl _localStorageRepository = LocalStorageRepositoryImpl();
+  User currentUser;
 
   Future<User> authenticate({
     @required String key,
@@ -34,6 +35,7 @@ class UserRepositoryImpl implements UserRepository {
   Future<User> getCurrentUser() async {
     var value = await _provider.storage.getItem("currentUser");
     if (value != null) {
+      this.currentUser = value;
       return User.fromJson(value);
     }
     return value;   
