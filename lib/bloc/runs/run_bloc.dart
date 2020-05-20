@@ -51,16 +51,19 @@ class RunBloc extends Bloc<RunEvent, RunState> {
 
       } catch (e) {
         yield RunErrorState(message: e.toString());
+        yield OfflineState();
       }
     } else if (event is FilterUpdated) {
       yield RunLoadingState();
       try {
         final List<Run> runs = await runRepository.getRuns();
         final List<Run> currentUserRuns = await runRepository.getUserRuns();
+        yield OnlineState();
         yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, currentUserRuns, event.filter), activeFilter: event.filter);
       } catch (e) {
         final List<Run> runs = await _localStorageRepository.getRunsFromStorage();
         final List<Run> currentUserRuns = await _localStorageRepository.getUserRunsFromStorage();
+        yield OfflineState();
         yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, currentUserRuns, event.filter), activeFilter: event.filter);
       }
     }
