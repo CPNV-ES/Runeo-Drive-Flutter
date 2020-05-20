@@ -47,3 +47,13 @@ class OfflineState extends RunState {
   @override
   List<Object> get props => [];
 }
+
+class AddRunnerSuccessState extends RunState {
+  Run run;
+  String message;
+
+  AddRunnerSuccessState(this.run, {@required this.message});
+
+  @override
+  List<Object> get props => [run, message];
+}
