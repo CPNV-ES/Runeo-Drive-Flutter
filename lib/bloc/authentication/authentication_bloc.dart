@@ -43,7 +43,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       final bool currentUserExist = await userRepository.isAuthenticated();
 
       if (currentUserExist) {
-        final User currentUser = await userRepository.getCurrentUser();
+        final User currentUser = userRepository.currentUser;
         yield AuthenticationAuthenticated(user: currentUser);
       } else {
         yield AuthenticationUnauthenticated();
