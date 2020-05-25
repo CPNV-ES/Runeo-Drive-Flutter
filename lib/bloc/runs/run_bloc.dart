@@ -50,7 +50,6 @@ class RunBloc extends Bloc<RunEvent, RunState> {
         }
 
       } catch (e) {
-        yield RunErrorState(message: e.toString());
         yield OfflineState();
       }
     } else if (event is FilterUpdated) {
