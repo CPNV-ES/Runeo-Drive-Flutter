@@ -162,8 +162,16 @@ Widget _buildErrorUi(String message) {
 }
 
 Widget _buildRunList(List<Run> runs) => ListView.builder(
+  key: PageStorageKey(runs.length),
   itemCount: runs.length,
   itemBuilder: (context, index) => RunListItem(
     run: runs[index],
   )
 );
+
+// Widget _buildRunList(List<Run> runs) => StatefulListView(
+//   runs.length, 
+//   (context, index) => RunListItem(
+//     run: runs[index],
+//   )
+// );
