@@ -85,7 +85,7 @@ class ApiProvider {
     }
   }
 
-  Future<dynamic> setRunner(List<Runner> runner, String updated_at) async {
+  Future<dynamic> setRunner(List<Runner> runner, String updatedAt) async {
     final value = await this.storage.getItem("token");
     final runRunner = runner.first;
     try {
@@ -94,7 +94,7 @@ class ApiProvider {
       headers: {
         HttpHeaders.authorizationHeader: "Bearer $value"
       },
-      body: {"updated_at": updated_at});
+      body: {"updated_at": updatedAt});
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);

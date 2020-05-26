@@ -42,7 +42,7 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     yield RunLoadingState();
     yield OnlineState();
     try {
-      yield RunLoadedState(runs: runs);
+      yield RunLoadedState(runs: runs.where((run) => run.status != "unpublished" && run.status != "error").toList());
     } catch (e) {
       yield RunErrorState(message: e.toString());
     }
@@ -88,7 +88,7 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     List<Run> runs, List<Run> currentUserRuns, String filter) {
       switch (filter) {
         case "all":
-          return runs;
+          return runs.where((run) => run.status != "unpublished" && run.status != "error").toList();
           break;
         case "mine":
           return currentUserRuns;
