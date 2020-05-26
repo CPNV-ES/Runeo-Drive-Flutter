@@ -14,6 +14,10 @@ class ApiProvider {
     this.storage = new LocalStorage('runeo_drive');
   }
 
+  /// GET runs.
+  /// 
+  /// Return all the runs as a dynamic [data]. 
+  /// Throws and Exception when [response.statusCode] is not equal to 200 and when there is no internet connection.
   Future<dynamic> getRuns() async {
     final value = await this.storage.getItem("token");
     try {
@@ -39,6 +43,10 @@ class ApiProvider {
     }
   }
 
+  /// GET authenticated user.
+  /// 
+  /// Return user as a dynamic [data]. 
+  /// Throws and Exception when [response.statusCode] is not equal to 200 and when there is no internet connection.
   Future<dynamic> getUser() async {
     final value = await this.storage.getItem("token");
     try {
@@ -62,6 +70,10 @@ class ApiProvider {
     }
   }
 
+  /// GET authenticated user runs.
+  /// 
+  /// Return all the runs from the authenticated user as a dynamic [data]. 
+  /// Throws and Exception when [response.statusCode] is not equal to 200 and when there is no internet connection.
   Future<dynamic> getUserRuns() async {
     final value = await this.storage.getItem("token");
     try {
@@ -85,9 +97,14 @@ class ApiProvider {
     }
   }
 
-  Future<dynamic> setRunner(List<Runner> runner, String updatedAt) async {
+  /// PATCH a runner to a run.
+  /// 
+  /// Pass the [runners] and the [updatedAt] of a run.
+  /// Return the run that has been updated as a dynamic [data]. 
+  /// Throws and Exception when [response.statusCode] is not equal to 200, when there is no internet connection and catch all the other Exceptions.
+  Future<dynamic> setRunner(List<Runner> runners, String updatedAt) async {
     final value = await this.storage.getItem("token");
-    final runRunner = runner.first;
+    final runRunner = runners.first;
     try {
       var response = await http.patch(
       '$_baseUrl/runners/' + runRunner.id.toString() + '/driver',

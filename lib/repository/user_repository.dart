@@ -19,6 +19,9 @@ class UserRepositoryImpl implements UserRepository {
   LocalStorageRepositoryImpl _localStorageRepository = LocalStorageRepositoryImpl();
   User currentUser;
 
+  /// Authenticate a user.
+  /// 
+  /// Return the [user].
   Future<User> authenticate({
     @required String key,
   }) async {
@@ -32,6 +35,9 @@ class UserRepositoryImpl implements UserRepository {
     return response;
   }
 
+  /// Get currently authenticated user.
+  /// 
+  /// Return [user] previously stored or null.
   Future<User> getCurrentUser() async {
     var value = await _provider.storage.getItem("currentUser");
     if (value != null) {
@@ -41,6 +47,9 @@ class UserRepositoryImpl implements UserRepository {
     return value;   
   }
 
+  /// Check if user is logged in.
+  /// 
+  /// Return true or false.
   Future<bool> isAuthenticated() async {
     /// read from keystore/keychain
     var value = await this.getCurrentUser();
@@ -50,11 +59,15 @@ class UserRepositoryImpl implements UserRepository {
     return false;
   }
 
+  /// Deleted token and current user from local storage.
   Future<void> logOut() async {
     _localStorageRepository.deleteFromStorage("token");
     _localStorageRepository.deleteFromStorage("currentUser");
   }
 
+  /// Scan a barcode.
+  /// 
+  /// Return the barcode scanned. Or return the caught error.
   Future<String> barcodeScanning() async {
     try {
       ScanResult barcode = await BarcodeScanner.scan();

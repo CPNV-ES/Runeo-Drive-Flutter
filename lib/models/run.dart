@@ -132,6 +132,9 @@ class Run extends Equatable {
     return data;
   }
 
+  /// Checks runs that have a runner.
+  /// 
+  /// Return true or false.
   bool isBelongingToSomeone(Run run) {
     return run.runners.any((runner) => runner.user != null);
   }

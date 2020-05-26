@@ -84,6 +84,10 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     }
   }
 
+  /// Filter runs.
+  /// 
+  /// Switch on [filter] to know what to return. return all the [runs] or the authenticated user [currentUserRuns]. 
+  /// And default, return [runs] by the status of the run.
   List<Run> _mapRunsToFilteredRuns(
     List<Run> runs, List<Run> currentUserRuns, String filter) {
       switch (filter) {

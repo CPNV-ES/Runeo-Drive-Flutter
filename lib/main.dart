@@ -37,6 +37,7 @@ class SimpleBlocDelegate extends BlocDelegate {
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
+  /// Initialize the locale date.
   initializeDateFormatting("fr_CH");
   runApp(
     BlocProvider<AuthenticationBloc>(
