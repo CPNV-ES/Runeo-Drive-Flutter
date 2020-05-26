@@ -24,48 +24,63 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     RunEvent event,
   ) async* {
     if (event is GetRunsEvent) {
-      final List<Run> runs = await runRepository.getRuns();
-      yield RunLoadingState();
-      yield OnlineState();
-      try {
-        yield RunLoadedState(runs: runs);
-      } catch (e) {
-        yield RunErrorState(message: e.toString());
-      }
+      yield* _mapRunLoadedToState(event);
     }
     if (event is GetRunsFromStorageEvent) {
-      try {
-        yield OfflineState();
-      } catch (e) {
-        yield RunErrorState(message: e.toString());
-      }
+      yield* _mapRunLoadedFromLocalStorageToState(event);
     }
     if (event is TakeARun) {
-      try {
-        final Run run = await runRepository.assignRunner(event.runner, event.updated_at);
-        if (run != null) {
-          yield AddRunnerSuccessState(run, message: "Successfully added runner to " + event.run.title + " run");
-        } else {
-          yield AddRunnerSuccessState(run, message: "Error when adding a runner to " + event.run.title);
-        }
-
-      } catch (e) {
-        yield OfflineState();
-      }
+      yield* _mapTakeARunToState(event);
     }
     if (event is FilterUpdated) {
-      yield RunLoadingState();
-      try {
-        final List<Run> runs = await runRepository.getRuns();
-        final List<Run> currentUserRuns = await runRepository.getUserRuns();
-        yield OnlineState();
-        yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, currentUserRuns, event.filter), activeFilter: event.filter);
-      } catch (e) {
-        final List<Run> runs = await _localStorageRepository.getRunsFromStorage();
-        final List<Run> currentUserRuns = await _localStorageRepository.getUserRunsFromStorage();
-        yield OfflineState();
-        yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, currentUserRuns, event.filter), activeFilter: event.filter);
+      yield* _mapFilteredRunsToState(event);
+    }
+  }
+
+  Stream<RunState> _mapRunLoadedToState(GetRunsEvent event) async* {
+    final List<Run> runs = await runRepository.getRuns();
+    yield RunLoadingState();
+    yield OnlineState();
+    try {
+      yield RunLoadedState(runs: runs);
+    } catch (e) {
+      yield RunErrorState(message: e.toString());
+    }
+  }
+
+  Stream<RunState> _mapRunLoadedFromLocalStorageToState(GetRunsFromStorageEvent event) async* {
+    try {
+      yield OfflineState();
+    } catch (e) {
+      yield RunErrorState(message: e.toString());
+    }
+  }
+
+  Stream<RunState> _mapTakeARunToState(TakeARun event) async* {
+    try {
+      final Run run = await runRepository.assignRunner(event.runner, event.updated_at);
+      if (run != null) {
+        yield AddRunnerSuccessState(run, message: "Successfully added runner to " + event.run.title + " run");
+      } else {
+        yield AddRunnerSuccessState(run, message: "Error when adding a runner to " + event.run.title);
       }
+      } catch (e) {
+        yield OfflineState();
+      }
+  }
+
+  Stream<RunState> _mapFilteredRunsToState(FilterUpdated event) async* {
+    yield RunLoadingState();
+    try {
+      final List<Run> runs = await runRepository.getRuns();
+      final List<Run> currentUserRuns = await runRepository.getUserRuns();
+      yield OnlineState();
+      yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, currentUserRuns, event.filter), activeFilter: event.filter);
+    } catch (e) {
+      final List<Run> runs = await _localStorageRepository.getRunsFromStorage();
+      final List<Run> currentUserRuns = await _localStorageRepository.getUserRunsFromStorage();
+      yield OfflineState();
+      yield RunLoadedState(runs: _mapRunsToFilteredRuns(runs, currentUserRuns, event.filter), activeFilter: event.filter);
     }
   }
 

@@ -56,10 +56,10 @@ class _Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton <String> (
+    return PopupMenuButton<String> (
       onSelected: onSelected,
-      itemBuilder: (BuildContext context) => < PopupMenuItem <String>> [
-        PopupMenuItem <String> (
+      itemBuilder: (BuildContext context) => <PopupMenuItem<String>> [
+        PopupMenuItem<String> (
           value: "all",
           child: Text(
             "Show all",
@@ -68,7 +68,7 @@ class _Button extends StatelessWidget {
             defaultStyle,
           ),
         ),
-        PopupMenuItem <String> (
+        PopupMenuItem<String> (
           value: "mine",
           child: Text(
             "Show mine",
@@ -77,7 +77,7 @@ class _Button extends StatelessWidget {
             defaultStyle,
           ),
         ),
-        PopupMenuItem <String> (
+        PopupMenuItem<String> (
           value: "drafting",
           child: Text(
             "Show in progress",
@@ -86,7 +86,7 @@ class _Button extends StatelessWidget {
             defaultStyle,
           ),
         ),
-        PopupMenuItem <String> (
+        PopupMenuItem<String> (
           value: "needs_filling",
           child: Text(
             "Show needs filling",
@@ -95,7 +95,7 @@ class _Button extends StatelessWidget {
             defaultStyle,
           ),
         ),
-        PopupMenuItem <String> (
+        PopupMenuItem<String> (
           value: "finished",
           child: Text(
             "Show finished",

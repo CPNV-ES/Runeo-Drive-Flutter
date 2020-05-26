@@ -1,4 +1,3 @@
-import 'package:RuneoDriverFlutter/views/runs/runs_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +6,7 @@ import 'package:RuneoDriverFlutter/models/index.dart';
 import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
 
 class RunsDetailPage extends StatelessWidget {
-  Run run;
+  final Run run;
 
   RunsDetailPage({
     Key key,
