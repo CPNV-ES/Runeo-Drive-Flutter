@@ -75,15 +75,18 @@ class _RunsPageState extends State<RunsPage> {
                           content: Text(state.message),
                         )
                       );
-                    } else if (state is RunLoadedState) {
+                    }
+                    if (state is RunLoadedState) {
                       _refreshCompleter?.complete();
                       _refreshCompleter = Completer();
-                    } else if (state is OfflineState) {
+                    }
+                    if (state is OfflineState) {
                       setState(() {
                         loading = false;
                         backgroundColor = Colors.red;
                       });
-                    } else if (state is OnlineState) {
+                    }
+                    if (state is OnlineState) {
                       setState(() {
                         loading = true;
                         backgroundColor = Colors.blue;
@@ -101,9 +104,11 @@ class _RunsPageState extends State<RunsPage> {
                   builder: (context, state) {
                     if (state is RunInitalState) {
                       return LoadingIndicator();
-                    } else if (state is RunLoadingState) {
+                    }
+                    if (state is RunLoadingState) {
                       return LoadingIndicator();
-                    } else if (state is RunLoadedState) {
+                    }
+                    if (state is RunLoadedState) {
                       if (state.runs != null && state.runs.isNotEmpty) {
                         if (loading) {
                           return RefreshIndicator(
@@ -119,7 +124,8 @@ class _RunsPageState extends State<RunsPage> {
                       } else {
                         return _buildNoDataView(context);
                       }
-                    } else if (state is RunErrorState) {
+                    }
+                    if (state is RunErrorState) {
                       return _buildErrorUi(state.message);
                     } else {
                       return Container();
@@ -168,10 +174,3 @@ Widget _buildRunList(List<Run> runs) => ListView.builder(
     run: runs[index],
   )
 );
-
-// Widget _buildRunList(List<Run> runs) => StatefulListView(
-//   runs.length, 
-//   (context, index) => RunListItem(
-//     run: runs[index],
-//   )
-// );
