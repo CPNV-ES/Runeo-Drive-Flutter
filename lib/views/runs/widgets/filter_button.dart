@@ -59,8 +59,9 @@ class _Button extends StatelessWidget {
     return PopupMenuButton<String> (
       onSelected: onSelected,
       itemBuilder: (BuildContext context) => <PopupMenuItem<String>> [
-        PopupMenuItem<String> (
+        CheckedPopupMenuItem<String> (
           value: "all",
+          checked: activeFilter == "all" ? true : false,
           child: Text(
             "Show all",
             style: activeFilter == "all" ?
@@ -68,8 +69,9 @@ class _Button extends StatelessWidget {
             defaultStyle,
           ),
         ),
-        PopupMenuItem<String> (
+        CheckedPopupMenuItem<String> (
           value: "mine",
+          checked: activeFilter == "mine" ? true : false,
           child: Text(
             "Show mine",
             style: activeFilter == "mine" ?
@@ -77,8 +79,9 @@ class _Button extends StatelessWidget {
             defaultStyle,
           ),
         ),
-        PopupMenuItem<String> (
+        CheckedPopupMenuItem<String> (
           value: "drafting",
+          checked: activeFilter == "drafting" ? true : false,
           child: Text(
             "Show in progress",
             style: activeFilter == "drafting" ?
@@ -86,8 +89,9 @@ class _Button extends StatelessWidget {
             defaultStyle,
           ),
         ),
-        PopupMenuItem<String> (
+        CheckedPopupMenuItem<String> (
           value: "needs_filling",
+          checked: activeFilter == "needs_filling" ? true : false,
           child: Text(
             "Show needs filling",
             style: activeFilter == "needs_filling" ?
@@ -95,8 +99,9 @@ class _Button extends StatelessWidget {
             defaultStyle,
           ),
         ),
-        PopupMenuItem<String> (
+        CheckedPopupMenuItem<String> (
           value: "finished",
+          checked: activeFilter == "finished" ? true : false,
           child: Text(
             "Show finished",
             style: activeFilter == "finished" ?

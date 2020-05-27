@@ -92,10 +92,10 @@ class RunsDetailPage extends StatelessWidget {
 
     List<dynamic> _getWaypoints() {
       List<Widget> children = [];
-      run.waypoints.forEach((element) {
+      run.waypoints.forEach((waypoint) {
         children.add(
           ListTile(
-            title: Text(run.waypoints.first.nickname),
+            title: Text(waypoint.nickname),
           )
         );
       });
