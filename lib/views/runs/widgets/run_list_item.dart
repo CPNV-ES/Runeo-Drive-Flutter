@@ -28,7 +28,7 @@ class RunListItem extends StatelessWidget {
           leading: DecoratedBox(
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
-              color: (run.isBelongingToSomeone(run)) ? Colors.red : Colors.green,
+              color: _statusRun(run),
             ),
             child: Padding(
               padding: EdgeInsets.all(15.0),
@@ -53,5 +53,44 @@ class RunListItem extends StatelessWidget {
         )
       ),
     );
+  }
+
+  Color _statusRun(Run run) {
+    switch (run.status) {
+      case "drafting":
+        return Colors.pink[100];
+        break;
+      case "unpublished":
+        return Colors.black;
+        break;
+      case "needs_filling":
+        return Colors.amber;
+        break;
+      case "almost_ready":
+        return Colors.green[300];
+        break;
+      case "error":
+        return Colors.red;
+        break;
+      case "ready":
+        return Colors.green[800];
+        break;
+      case "starting":
+        return Colors.blue[100];
+        break;
+      case "ending":
+        return Colors.blue[100];
+        break;
+      case "gone":
+        return Colors.blue[400];
+        break;
+      case "finished":
+        return Colors.blueGrey[100];
+        break;
+      case "cancelled":
+        return Colors.grey[800];
+        break;
+      default:
+    }
   }
 }

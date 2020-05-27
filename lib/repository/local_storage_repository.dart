@@ -11,6 +11,9 @@ abstract class LocalStorageRepository {
 class LocalStorageRepositoryImpl implements LocalStorageRepository {
   ApiProvider _provider = ApiProvider();
 
+  /// Get runs from local storage.
+  /// 
+  /// Return all the [runs] as a list<Run>.
   Future<dynamic> getRunsFromStorage() async {
     final List<Run> runs = [];
     var response = await _provider.storage.getItem("runs");
@@ -20,6 +23,9 @@ class LocalStorageRepositoryImpl implements LocalStorageRepository {
     return runs;
   }
 
+  /// Get authenticated user runs from local storage.
+  /// 
+  /// Return all the [runs] as a list<Run>.
   Future<dynamic> getUserRunsFromStorage() async {
     final List<Run> runs = [];
     var response = await _provider.storage.getItem("userRuns");
@@ -29,11 +35,13 @@ class LocalStorageRepositoryImpl implements LocalStorageRepository {
     return runs;
   }
 
+  /// Delete [key] in local storage.
   Future<void> deleteFromStorage(String key) async {
     /// delete from keystore/keychain
     return await _provider.storage.deleteItem(key);
   }
 
+  /// Insert [key] and [value] to local storage.
   Future<void> saveToStorage(String key, dynamic value) async {
     /// write to keystore/keychain
     return await _provider.storage.setItem(key, value);

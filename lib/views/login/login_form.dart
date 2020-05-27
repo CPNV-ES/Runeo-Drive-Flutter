@@ -69,7 +69,7 @@ class _LoginFormState extends State<LoginForm> {
                         splashColor: Colors.blueAccent,
                         onPressed:
                             state is! LoginLoading ? _onLoginButtonPressed : null,
-                        child: Text('Login', style: TextStyle(fontSize: 30.0)),
+                        child: Text('Connexion', style: TextStyle(fontSize: 30.0)),
                       ),
                       Container(
                         child: state is LoginLoading
