@@ -90,11 +90,22 @@ class RunsDetailPage extends StatelessWidget {
       ],
     );
 
+    List<dynamic> _getWaypoints() {
+      List<Widget> children = [];
+      run.waypoints.forEach((element) {
+        children.add(
+          ListTile(
+            title: Text(run.waypoints.first.nickname),
+          )
+        );
+      });
+      return children;
+    }
+
     Widget bottomContentText(Run run) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget> [
         Container(
-          width: 350.0,
           child: Row(
             children: [
               Icon(
@@ -142,16 +153,56 @@ class RunsDetailPage extends StatelessWidget {
             ),
           ],
         ),
+        Container(
+          margin: EdgeInsets.only(top: 20.0),
+          child: Row(
+            children: [
+              Icon(
+                Icons.people,
+                color: Colors.black,
+                size: 30.0,
+              ),
+              SizedBox(width: 10.0),
+              Text(
+                (run.nameContact != null) ? run.nameContact : '-',
+                style: TextStyle(fontSize: 18.0),
+              ),
+              SizedBox(width: 20.0),
+              Icon(
+                Icons.contact_phone,
+                color: Colors.black,
+                size: 30.0,
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: Text(
+                (run.numContact != null) ? run.numContact : "-",
+                style: TextStyle(fontSize: 18.0),
+                ),
+              )
+            ],
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 20.0),
+          child: ExpansionTile(
+            title: Text(
+              "Waypoints",
+              style: TextStyle(fontSize: 18.0),
+            ),
+            children: _getWaypoints(),
+          ),
+        ),
       ],
     );
 
     Widget readButton(Run run) => Container(
-      margin: EdgeInsets.only(top: 100.0),
+      margin: EdgeInsets.only(top: 10.0),
       width: MediaQuery.of(context).size.width,
       child: RaisedButton(
         onPressed: (run.isBelongingToSomeone(run)) ? null : () => { BlocProvider.of<RunBloc>(context).add(TakeARun(run, run.runners, DateFormat('y-MM-ddTHH:mm:ss', 'fr_CH').format(DateTime.parse("2020-05-19 09:54:50")))) },
         color: Color.fromRGBO(58, 66, 86, 1.0),
-        child: (run.isBelongingToSomeone(run)) ? Text("ALREADY TAKEN", style: TextStyle(color: Colors.white)) : Text("TAKE THIS RUN", style: TextStyle(color: Colors.white)),
+        child: (run.isBelongingToSomeone(run)) ? Text("Pris par " + run.runners.first.user.name, style: TextStyle(color: Colors.white)) : Text("Prendre", style: TextStyle(color: Colors.white)),
       )
     );
 

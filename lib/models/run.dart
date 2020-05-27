@@ -64,15 +64,12 @@ class Run extends Equatable {
     this.train = train ?? null;
     this.recentlyCreated = recentlyCreated ?? false;
     this.recentlyUpdated = recentlyUpdated ?? false;
-    this.waypoints = waypoints;
+    this.waypoints = waypoints ?? null;
     this.runners = runners;
   }
 
   @override
   List<Object> get props => [id, title, beginAt, finishedAt, startAt, endAt, waypoints, runners, runinfo, status, nameContact, numContact, flight, train, updatedAt, nbPassenger, paxTbc, timeTbc];
-
-  set setRecentlyCreated(bool recentlyCreated) => this.recentlyCreated = recentlyCreated;
-  set setRecentlyUpdated(bool recentlyUpdated) => this.recentlyUpdated = recentlyUpdated;
 
   Run.fromJson(Map<String, dynamic> json) {
     id = json['id'];
