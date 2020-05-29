@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:time/time.dart';
 
 import 'package:RuneoDriverFlutter/bloc/authentication/index.dart';
 import 'package:RuneoDriverFlutter/views/runs/widgets/filter_button.dart';
@@ -25,6 +27,11 @@ class _RunsPageState extends State<RunsPage> {
   Color backgroundColor;
   bool loading = true;
   Completer <void> _refreshCompleter;
+  Stopwatch _stopwatch;
+  Timer timer;
+  DateTime lastRefreshTimer;
+  Duration lastRefreshTimeElapse;
+  String showLastRefreshTime;
 
   @override
   void initState() {
@@ -32,10 +39,49 @@ class _RunsPageState extends State<RunsPage> {
     _runBloc = BlocProvider.of<RunBloc>(context);
     _connectivityBloc = BlocProvider.of<ConnectivityBloc>(context);
     _refreshCompleter = Completer<void>();
+    _stopwatch = new Stopwatch();
+    timer = Timer.periodic(Duration(milliseconds: 100), (Timer t) => updateTime(lastRefreshTimer));
     _subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       // Got a new connectivity status!
       _connectivityBloc.add(GetStatusInfo(result: result));
     });
+  }
+
+  /// Update display text
+  void updateTime(DateTime lastRefreshTimer) {
+    if (_stopwatch.isRunning) {
+      setState(() {
+        showLastRefreshTime = timeago.format(lastRefreshTimer, locale: 'fr_short');
+      });
+    } else {
+      setState(() {
+        lastRefreshTimer = 0.minutes.fromNow;
+        showLastRefreshTime = timeago.format(lastRefreshTimer, locale: 'fr_short');
+      });
+    }
+  }
+
+  /// Start stopwatch and set timer.
+  void startWatch() {
+    _stopwatch.start();
+    setState(() {
+      lastRefreshTimeElapse = _stopwatch.elapsed;
+      lastRefreshTimer = lastRefreshTimeElapse.fromNow;
+    });
+    timer = Timer.periodic(Duration(milliseconds: 100), (Timer t) => updateTime(lastRefreshTimer));    
+  }
+
+  /// Stop and reset stopwatch. Then start a new stopwatch.
+  void resetWatch() {
+    timer?.cancel();
+    timer = null;
+    _stopwatch.stop();
+    _stopwatch.reset();
+    setState(() {
+      lastRefreshTimeElapse = Duration.zero;
+      showLastRefreshTime = "";
+    });
+    startWatch();
   }
 
   @override
@@ -56,7 +102,11 @@ class _RunsPageState extends State<RunsPage> {
               appBar: AppBar(
                 title: Text("Runéo"),
                 backgroundColor: backgroundColor,
-                actions: <Widget> [
+                actions: [
+                  Container(
+                    padding: EdgeInsets.only(top: 20),
+                    child: (showLastRefreshTime != null) ? Text(showLastRefreshTime.padLeft(50)) : Text("".padLeft(50)),
+                  ),
                   FilterButton(visible: true),
                   IconButton(
                     icon: Icon(Icons.exit_to_app),
@@ -114,7 +164,12 @@ class _RunsPageState extends State<RunsPage> {
                           return RefreshIndicator(
                             child: _buildRunList(state.runs), 
                             onRefresh: () {
-                              _runBloc.add(GetRunsEvent()); 
+                              if (_stopwatch.isRunning) {
+                                resetWatch();
+                              } else {
+                                startWatch();
+                              }
+                              _runBloc.add(GetRunsEvent());
                               return _refreshCompleter.future; 
                             }
                           );
