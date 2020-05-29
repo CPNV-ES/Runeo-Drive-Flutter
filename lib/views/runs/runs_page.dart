@@ -29,7 +29,7 @@ class _RunsPageState extends State<RunsPage> {
   Completer <void> _refreshCompleter;
   Stopwatch _stopwatch;
   Timer timer;
-  DateTime lastRefreshTimer;
+  DateTime lastRefreshTimer = 0.minutes.fromNow;
   Duration lastRefreshTimeElapse;
   String showLastRefreshTime;
 
@@ -55,7 +55,6 @@ class _RunsPageState extends State<RunsPage> {
       });
     } else {
       setState(() {
-        lastRefreshTimer = 0.minutes.fromNow;
         showLastRefreshTime = timeago.format(lastRefreshTimer, locale: 'fr_short');
       });
     }
