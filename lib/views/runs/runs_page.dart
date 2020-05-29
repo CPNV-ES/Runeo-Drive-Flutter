@@ -47,6 +47,7 @@ class _RunsPageState extends State<RunsPage> {
     });
   }
 
+  /// Update display text
   void updateTime(DateTime lastRefreshTimer) {
     if (_stopwatch.isRunning) {
       setState(() {
@@ -60,6 +61,7 @@ class _RunsPageState extends State<RunsPage> {
     }
   }
 
+  /// Start stopwatch and set timer.
   void startWatch() {
     _stopwatch.start();
     setState(() {
@@ -69,6 +71,7 @@ class _RunsPageState extends State<RunsPage> {
     timer = Timer.periodic(Duration(milliseconds: 100), (Timer t) => updateTime(lastRefreshTimer));    
   }
 
+  /// Stop and reset stopwatch. Then start a new stopwatch.
   void resetWatch() {
     timer?.cancel();
     timer = null;
