@@ -1,8 +1,8 @@
-import 'package:RuneoDriverFlutter/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:RuneoDriverFlutter/bloc/login/index.dart';
+import 'package:RuneoDriverFlutter/repository/user_repository.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -15,10 +15,11 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     _onLoginButtonPressed() {
+      // Needs to be changed, token hardcoded for now
       //userRepository.barcodeScanning().then((value) =>
         BlocProvider.of<LoginBloc>(context).add(
           LoginInButtonPressed(
-            token: "VA5PuxHGSYy5FnqX5enz1HUa9DtuQCQNyIl5LTxk5oViPEmGnQIo0Ef3qB1B",
+            token: "S114eYmlUVsXuJ1vf0iJhAF4LKDxM3q7yl2hN5ardbjEgMvtA9v1xqCeOWcZ",
           ),
         );
       //);     
@@ -68,7 +69,7 @@ class _LoginFormState extends State<LoginForm> {
                         splashColor: Colors.blueAccent,
                         onPressed:
                             state is! LoginLoading ? _onLoginButtonPressed : null,
-                        child: Text('Login', style: TextStyle(fontSize: 30.0)),
+                        child: Text('Connexion', style: TextStyle(fontSize: 30.0)),
                       ),
                       Container(
                         child: state is LoginLoading

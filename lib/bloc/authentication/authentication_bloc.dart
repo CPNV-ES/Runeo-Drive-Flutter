@@ -1,9 +1,10 @@
 import 'dart:async';
 
-import 'package:RuneoDriverFlutter/models/index.dart';
-import 'package:RuneoDriverFlutter/repository/user_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+
+import 'package:RuneoDriverFlutter/models/index.dart';
+import 'package:RuneoDriverFlutter/repository/user_repository.dart';
 import 'package:RuneoDriverFlutter/bloc/authentication/index.dart';
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
@@ -42,7 +43,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       final bool currentUserExist = await userRepository.isAuthenticated();
 
       if (currentUserExist) {
-        final User currentUser = await userRepository.getCurrentUser();
+        final User currentUser = userRepository.currentUser;
         yield AuthenticationAuthenticated(user: currentUser);
       } else {
         yield AuthenticationUnauthenticated();

@@ -1,8 +1,9 @@
+import 'package:barcode_scan/barcode_scan.dart';
+import 'package:meta/meta.dart';
+
 import 'package:RuneoDriverFlutter/models/index.dart';
 import 'package:RuneoDriverFlutter/provider/api_provider.dart';
-import 'package:barcode_scan/barcode_scan.dart';
-import 'package:localstorage/localstorage.dart';
-import 'package:meta/meta.dart';
+import 'package:RuneoDriverFlutter/repository/local_storage_repository.dart';
 
 abstract class UserRepository {
   Future<User> authenticate();
@@ -10,47 +11,63 @@ abstract class UserRepository {
   Future<bool> isAuthenticated();
   Future<void> logOut();
   Future<String> barcodeScanning();
-  Future<void> _deleteFromStorage(String key);
-  Future<void> _saveToStorage(String key, dynamic value);
 }
 
 class UserRepositoryImpl implements UserRepository {
   ScanResult barcode;
   ApiProvider _provider = ApiProvider();
-  LocalStorage storage;
+  LocalStorageRepositoryImpl _localStorageRepository = LocalStorageRepositoryImpl();
+  User currentUser;
 
-  UserRepositoryImpl() {
-    this.storage = _provider.storage;
-  }
-
+  /// Authenticate a user.
+  /// 
+  /// Return the [user].
   Future<User> authenticate({
     @required String key,
   }) async {
-    this._saveToStorage("token", key);
-    final response = await _provider.get("me");
-    this._saveToStorage("currentUser", User.fromJson(response));
-    return User.fromJson(response);
+    _localStorageRepository.saveToStorage("token", key);
+    final response = await _provider.getUser();
+    if (response != null) {
+      final User user = User.fromJson(response);
+      _localStorageRepository.saveToStorage("currentUser", user);      
+      return user;
+    }
+    return response;
   }
 
+  /// Get currently authenticated user.
+  /// 
+  /// Return [user] previously stored or null.
   Future<User> getCurrentUser() async {
-    var value = await this.storage.getItem("currentUser");
-    return User.fromJson(value);
+    var value = await _provider.storage.getItem("currentUser");
+    if (value != null) {
+      this.currentUser = value;
+      return User.fromJson(value);
+    }
+    return value;   
   }
 
+  /// Check if user is logged in.
+  /// 
+  /// Return true or false.
   Future<bool> isAuthenticated() async {
     /// read from keystore/keychain
-    var value = await this.storage.getItem("currentUser");
+    var value = await this.getCurrentUser();
     if (value != null) {
       return true;
     }
     return false;
   }
 
+  /// Deleted token and current user from local storage.
   Future<void> logOut() async {
-    this._deleteFromStorage("token");
-    this._deleteFromStorage("currentUser");
+    _localStorageRepository.deleteFromStorage("token");
+    _localStorageRepository.deleteFromStorage("currentUser");
   }
 
+  /// Scan a barcode.
+  /// 
+  /// Return the barcode scanned. Or return the caught error.
   Future<String> barcodeScanning() async {
     try {
       ScanResult barcode = await BarcodeScanner.scan();
@@ -66,15 +83,5 @@ class UserRepositoryImpl implements UserRepository {
     } catch (e) {
       return 'Unknown error: $e';
     }
-  }
-
-  Future<void> _deleteFromStorage(String key) async {
-    /// delete from keystore/keychain
-    return await this.storage.deleteItem(key);
-  }
-
-  Future<void> _saveToStorage(String key, dynamic value) async {
-    /// write to keystore/keychain
-    return await this.storage.setItem(key, value);
   }
 }

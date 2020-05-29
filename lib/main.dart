@@ -10,6 +10,7 @@ import 'package:RuneoDriverFlutter/views/login/login_form.dart';
 import 'package:RuneoDriverFlutter/views/runs/runs_page.dart';
 import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
 import 'package:RuneoDriverFlutter/repository/run_repository.dart';
+import 'package:RuneoDriverFlutter/bloc/connectivity/index.dart';
 
 import 'package:RuneoDriverFlutter/views/shared/loading_indicator.dart';
 import 'package:RuneoDriverFlutter/views/shared/splash_screen.dart';
@@ -36,6 +37,7 @@ class SimpleBlocDelegate extends BlocDelegate {
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
+  /// Initialize the locale date.
   initializeDateFormatting("fr_CH");
   runApp(
     BlocProvider<AuthenticationBloc>(
@@ -53,17 +55,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Runeo',
       theme: ThemeData(
         // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and
@@ -73,8 +66,15 @@ class MyApp extends StatelessWidget {
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
           if (state is AuthenticationAuthenticated) {
-            return BlocProvider(
-              create: (context) => RunBloc(UserRepositoryImpl(), repository: RunRepositoryImpl()),
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider<RunBloc>(
+                  create: (context) => RunBloc(runRepository: RunRepositoryImpl()),
+                ),
+                BlocProvider<ConnectivityBloc>(
+                  create: (context) => ConnectivityBloc(runBloc: BlocProvider.of<RunBloc>(context) )
+                ),
+              ], 
               child: RunsPage(),
             );
           }
@@ -90,10 +90,6 @@ class MyApp extends StatelessWidget {
           return SplashPage();
         }
       ),
-      // home: BlocProvider(
-      //   create: (context) => RunBloc(repository: RunRepositoryImpl()),
-      //   child: RunsPage(),
-      // ),
     );
   }
 }

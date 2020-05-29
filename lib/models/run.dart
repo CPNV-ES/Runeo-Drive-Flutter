@@ -9,7 +9,7 @@ class Run extends Equatable {
   String title;
   String beginAt;
   String startAt;
-  List<String> updatedAt;
+  dynamic updatedAt;
   int paxTbc;
   int timeTbc;
   String endAt;
@@ -19,9 +19,9 @@ class Run extends Equatable {
   String nameContact;
   String numContact;
   String flight;
-	String train;
-	bool recentlyCreated;
-	bool recentlyUpdated;
+  String train;
+  bool recentlyCreated;
+  bool recentlyUpdated;
   List<Waypoint> waypoints;
   List<Runner> runners;
 
@@ -31,7 +31,7 @@ class Run extends Equatable {
       String title,
       String beginAt,
       String startAt,
-      List<String> updatedAt,
+      dynamic updatedAt,
       int paxTbc,
       int timeTbc,
       String endAt,
@@ -41,9 +41,9 @@ class Run extends Equatable {
       String nameContact,
       String numContact,
       String flight,
-			String train,
-			bool recentlyCreated,
-			bool recentlyUpdated,
+      String train,
+      bool recentlyCreated,
+      bool recentlyUpdated,
       List<Waypoint> waypoints,
       List<Runner> runners}) {
     this.id = id;
@@ -51,7 +51,7 @@ class Run extends Equatable {
     this.title = title;
     this.beginAt = beginAt;
     this.startAt = startAt ?? null;
-    this.updatedAt = updatedAt;
+    this.updatedAt = updatedAt ?? null;
     this.paxTbc = paxTbc;
     this.timeTbc = timeTbc;
     this.endAt = endAt ?? null;
@@ -61,18 +61,15 @@ class Run extends Equatable {
     this.nameContact = nameContact ?? null;
     this.numContact = numContact ?? null;
     this.flight = flight ?? null;
-		this.train = train ?? null;
-		this.recentlyCreated = recentlyCreated ?? false;
-		this.recentlyUpdated = recentlyUpdated ?? false;
-    this.waypoints = waypoints;
+    this.train = train ?? null;
+    this.recentlyCreated = recentlyCreated ?? false;
+    this.recentlyUpdated = recentlyUpdated ?? false;
+    this.waypoints = waypoints ?? null;
     this.runners = runners;
   }
 
-	@override
-	List<Object> get props => [id, title, beginAt, finishedAt, startAt, endAt, waypoints, runners, runinfo, status, nameContact, numContact, flight, train, updatedAt, nbPassenger, paxTbc, timeTbc];
-
-	set setRecentlyCreated(bool recentlyCreated) => this.recentlyCreated = recentlyCreated;
-	set setRecentlyUpdated(bool recentlyUpdated) => this.recentlyUpdated = recentlyUpdated;
+  @override
+  List<Object> get props => [id, title, beginAt, finishedAt, startAt, endAt, waypoints, runners, runinfo, status, nameContact, numContact, flight, train, updatedAt, nbPassenger, paxTbc, timeTbc];
 
   Run.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -80,9 +77,7 @@ class Run extends Equatable {
     title = json['title'];
     beginAt = json['begin_at'];
     startAt = json['start_at'];
-    if (json['updated_at'] != null) {
-      new List<String>.from(json['updated_at']);
-    }
+    updatedAt = json['updated_at'];
     paxTbc = json['pax_tbc'];
     timeTbc = json['time_tbc'];
     endAt = json['end_at'];
@@ -114,9 +109,7 @@ class Run extends Equatable {
     data['title'] = this.title;
     data['begin_at'] = this.beginAt;
     data['start_at'] = this.startAt;
-    if (this.updatedAt != null) {
-      data['updated_at'] = this.updatedAt;
-    }
+    data['updated_at'] = this.updatedAt;
     data['pax_tbc'] = this.paxTbc;
     data['time_tbc'] = this.timeTbc;
     data['end_at'] = this.endAt;
@@ -134,5 +127,12 @@ class Run extends Equatable {
       data['runners'] = this.runners.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  /// Checks runs that have a runner.
+  /// 
+  /// Return true or false.
+  bool isBelongingToSomeone(Run run) {
+    return run.runners.any((runner) => runner.user != null);
   }
 }
