@@ -26,7 +26,7 @@ class UserRepositoryImpl implements UserRepository {
       @required String key, String firebaseToken
     }) async {
     _localStorageRepository.saveToStorage("token", key);
-    _localStorageRepository.saveToStorage("fireabaseToken", firebaseToken);
+    _localStorageRepository.saveToStorage("firebaseToken", firebaseToken);
     final response = await _provider.getUser();
     if (response != null) {
       final User user = User.fromJson(response);
