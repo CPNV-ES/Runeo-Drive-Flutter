@@ -15,18 +15,16 @@ class _LoginFormState extends State<LoginForm> {
 
   Future<void> _onLoginButtonPressed() async {
     var firebaseToken = await FirebaseMessagingService.instance.getToken();
-    print(firebaseToken);
     FirebaseMessagingService.instance.getIOSPermission();
 
     // Needs to be changed, token hardcoded for now
-    //userRepository.barcodeScanning().then((value) =>
+    userRepository.barcodeScanning().then((value) =>
       BlocProvider.of<LoginBloc>(context).add(
         LoginInButtonPressed(
-          token: "S114eYmlUVsXuJ1vf0iJhAF4LKDxM3q7yl2hN5ardbjEgMvtA9v1xqCeOWcZ",
+          token: value,
           firebaseToken: firebaseToken
         ),
-      );
-    //);     
+      ));     
     }
 
   @override
