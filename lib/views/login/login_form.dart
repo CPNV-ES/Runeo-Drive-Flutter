@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:RuneoDriverFlutter/bloc/login/index.dart';
 import 'package:RuneoDriverFlutter/repository/user_repository.dart';
+import 'package:RuneoDriverFlutter/services/firebase_messaging_service.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -12,18 +13,21 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final UserRepositoryImpl userRepository = UserRepositoryImpl();
 
+  Future<void> _onLoginButtonPressed() async {
+    var firebaseToken = await FirebaseMessagingService.instance.getToken();
+    // Needs to be changed, token hardcoded for now
+    //userRepository.barcodeScanning().then((value) =>
+      BlocProvider.of<LoginBloc>(context).add(
+        LoginInButtonPressed(
+          token: "S114eYmlUVsXuJ1vf0iJhAF4LKDxM3q7yl2hN5ardbjEgMvtA9v1xqCeOWcZ",
+          firebaseToken: firebaseToken
+        ),
+      );
+    //);     
+    }
+
   @override
   Widget build(BuildContext context) {
-    _onLoginButtonPressed() {
-      // Needs to be changed, token hardcoded for now
-      //userRepository.barcodeScanning().then((value) =>
-        BlocProvider.of<LoginBloc>(context).add(
-          LoginInButtonPressed(
-            token: "S114eYmlUVsXuJ1vf0iJhAF4LKDxM3q7yl2hN5ardbjEgMvtA9v1xqCeOWcZ",
-          ),
-        );
-      //);     
-    }
     return Center(
       child: Scaffold(
         appBar: AppBar(
