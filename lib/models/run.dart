@@ -129,6 +129,20 @@ class Run extends Equatable {
     return data;
   }
 
+  /// Getter that find all the runner fullnames of a run
+  /// 
+  /// Return [String]
+  String get runnerFullNames {
+    List<String> runnerNames = [];
+    runners.forEach((runner) {
+      if (runner.user != null) {
+        runnerNames.add(runner.user.fullname);
+      }
+    });
+
+    return runnerNames.join(" et ");
+  }
+
   /// Checks runs that have a runner.
   /// 
   /// Return true or false.

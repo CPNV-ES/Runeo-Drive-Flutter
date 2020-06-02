@@ -53,7 +53,7 @@ class _RunsPageState extends State<RunsPage> {
 
     /// Listen to push notifications
     FirebaseMessagingService.instance.firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
+      onMessage: (Map<String, dynamic> message) {
         // add message to event
        _runBloc.add(PushNotificationEvent(message));
       },
@@ -116,7 +116,7 @@ class _RunsPageState extends State<RunsPage> {
             actions: [
               Container(
                 padding: EdgeInsets.only(top: 20),
-                child: (showLastRefreshTime != null) ? Text(showLastRefreshTime.padLeft(50)) : Text("".padLeft(50)),
+                child: (showLastRefreshTime != null) ? Text(showLastRefreshTime.padLeft(5)) : Text("".padLeft(5)),
               ),
               FilterButton(visible: true),
               IconButton(
@@ -246,17 +246,15 @@ Widget _buildNoDataView(BuildContext context) => Center(
   ),
 );
 
-Widget _buildErrorUi(String message) {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.all(8.0),
-        child: Text(
-          message,
-          style: TextStyle(color: Colors.red),
-        ),
+Widget _buildErrorUi(String message) => Center(
+  child: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Text(
+      message,
+      style: TextStyle(color: Colors.red),
     ),
-  );
-}
+  ),
+);
 
 Widget _buildRunList(List<Run> runs) => ListView.builder(
   key: PageStorageKey(runs.length),
