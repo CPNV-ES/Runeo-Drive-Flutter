@@ -200,7 +200,7 @@ class RunsDetailPage extends StatelessWidget {
       margin: EdgeInsets.only(top: 10.0),
       width: MediaQuery.of(context).size.width,
       child: RaisedButton(
-        onPressed: (run.isBelongingToSomeone(run)) ? null : () => { BlocProvider.of<RunBloc>(context).add(TakeARun(run, run.runners, DateFormat('y-MM-ddTHH:mm:ss', 'fr_CH').format(DateTime.parse("2020-05-19 09:54:50")))) },
+        onPressed: (run.isBelongingToSomeone(run)) ? null : () => { BlocProvider.of<RunBloc>(context).add(TakeARunEvent(run, run.runners, DateFormat('y-MM-ddTHH:mm:ss', 'fr_CH').format(DateTime.parse("2020-05-19 09:54:50")))) },
         color: Color.fromRGBO(58, 66, 86, 1.0),
         child: (run.isBelongingToSomeone(run)) ? Text("Pris par " + run.runners.first.user.name, style: TextStyle(color: Colors.white)) : Text("Prendre", style: TextStyle(color: Colors.white)),
       )
@@ -225,7 +225,8 @@ class RunsDetailPage extends StatelessWidget {
                 content: Text(state.message),
               )
             );
-          } else if (state is RunErrorState) {
+          }
+          if (state is RunErrorState) {
             Scaffold.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
