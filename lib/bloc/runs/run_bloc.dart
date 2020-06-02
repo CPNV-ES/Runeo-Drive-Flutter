@@ -29,11 +29,14 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     if (event is GetRunsFromStorageEvent) {
       yield* _mapRunLoadedFromLocalStorageToState(event);
     }
-    if (event is TakeARun) {
+    if (event is TakeARunEvent) {
       yield* _mapTakeARunToState(event);
     }
-    if (event is FilterUpdated) {
+    if (event is FilterUpdatedEvent) {
       yield* _mapFilteredRunsToState(event);
+    }
+    if (event is PushNotificationEvent) {
+      yield* _mapMessagePushNotificationToState(event);
     }
   }
 
@@ -56,7 +59,18 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     }
   }
 
-  Stream<RunState> _mapTakeARunToState(TakeARun event) async* {
+  Stream<RunState> _mapMessagePushNotificationToState(PushNotificationEvent event) async* {
+    yield OnlineState();
+    try {
+      if (event.message.isNotEmpty) {
+        yield OnMessageState(event.message);
+      }
+    } catch (e) {
+      yield RunErrorState(message: e.toString());
+    }
+  }
+
+  Stream<RunState> _mapTakeARunToState(TakeARunEvent event) async* {
     try {
       final Run run = await runRepository.assignRunner(event.runner, event.updated_at);
       if (run != null) {
@@ -69,7 +83,7 @@ class RunBloc extends Bloc<RunEvent, RunState> {
       }
   }
 
-  Stream<RunState> _mapFilteredRunsToState(FilterUpdated event) async* {
+  Stream<RunState> _mapFilteredRunsToState(FilterUpdatedEvent event) async* {
     yield RunLoadingState();
     try {
       final List<Run> runs = await runRepository.getRuns();
