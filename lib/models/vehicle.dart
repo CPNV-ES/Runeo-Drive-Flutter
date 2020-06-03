@@ -1,10 +1,8 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:RuneoDriverFlutter/models/comment.dart';
 import 'package:RuneoDriverFlutter/models/vehicle_category.dart';
 import 'package:RuneoDriverFlutter/models/user.dart';
 
-class Vehicle extends Equatable {
+class Vehicle {
   int id;
   String name;
   String plateNumber;
@@ -35,9 +33,6 @@ class Vehicle extends Equatable {
     this.type = type;
     this.comments = comments;
   }
-
-  @override
-  List<Object> get props => [id, name, plateNumber, gasLevel, nbPlace, status, user, type, comments];
 
   Vehicle.fromJson(Map<String, dynamic> json) {
     id = json['id'];
