@@ -54,8 +54,7 @@ class _RunsPageState extends State<RunsPage> {
     /// Listen to push notifications
     FirebaseMessagingService.instance.firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
-        // add message to event
-       _runBloc.add(PushNotificationEvent(message));
+       _showNotificationSnackBar(message);
       },
     );
   }
@@ -153,39 +152,12 @@ class _RunsPageState extends State<RunsPage> {
                     backgroundColor = Colors.blue;
                   });
                 }
-                if (state is OnMessageState) {
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      duration: Duration(seconds: 10),
-                      action: SnackBarAction(
-                        label: "Close",
-                        textColor: Colors.redAccent,
-                        onPressed: () => Scaffold.of(context).hideCurrentSnackBar(),
-                      ),
-                      content: Padding(
-                        padding: const EdgeInsets.only(bottom: 25.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: < Widget > [
-                              Text(state.message['notification']["title"]),
-                              Text(state.message['notification']["body"]),
-                            ],
-                          ),
-                      ),
-                    )
-                  );
-                }
               },
               buildWhen: (previous, current) {
                 if (current is OfflineState && previous is RunLoadedState) {
                   return false;
                 }
                 if (current is AddRunnerSuccessState) {
-                  return false;
-                }
-                if (current is OnMessageState) {
                   return false;
                 }
               },
@@ -227,6 +199,28 @@ class _RunsPageState extends State<RunsPage> {
             ),
           )
         )
+      ),
+    );
+  }
+
+  void _showNotificationSnackBar(Map<String, dynamic> message) {
+    Scaffold.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 5),
+        action: SnackBarAction(
+          label: "Fermer",
+          textColor: Colors.redAccent,
+          onPressed: () => Scaffold.of(context).hideCurrentSnackBar(),
+        ),
+        content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(message['notification']["title"]),
+                Text(message['notification']["body"]),
+              ],
+        ),
       ),
     );
   }

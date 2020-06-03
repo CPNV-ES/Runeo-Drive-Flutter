@@ -41,7 +41,6 @@ void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   /// Initialize the locale date.
   initializeDateFormatting("fr_CH");
-  WidgetsFlutterBinding.ensureInitialized(); 
   runApp(
     BlocProvider<AuthenticationBloc>(
       create: (context) {
@@ -54,10 +53,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp() {
-    /// Initialize firebase messaging
-    FirebaseMessagingService.instance;
-  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -82,7 +77,7 @@ class MyApp extends StatelessWidget {
                   create: (context) => ConnectivityBloc(runBloc: BlocProvider.of<RunBloc>(context) )
                 ),
               ], 
-              child: RunsPage(),
+              child: Scaffold(body: RunsPage()),
             );
           }
           if (state is AuthenticationUnauthenticated) {

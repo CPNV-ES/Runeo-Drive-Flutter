@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,17 +17,18 @@ class _LoginFormState extends State<LoginForm> {
 
   Future<void> _onLoginButtonPressed() async {
     var firebaseToken = await FirebaseMessagingService.instance.getToken();
-    FirebaseMessagingService.instance.getIOSPermission();
+    if (Platform.isIOS) { FirebaseMessagingService.instance.getIOSPermission(); }
 
     // Needs to be changed, token hardcoded for now
-    userRepository.barcodeScanning().then((value) =>
+    //userRepository.barcodeScanning().then((value) =>
       BlocProvider.of<LoginBloc>(context).add(
         LoginInButtonPressed(
-          token: value,
+          token: "S114eYmlUVsXuJ1vf0iJhAF4LKDxM3q7yl2hN5ardbjEgMvtA9v1xqCeOWcZ",
           firebaseToken: firebaseToken
         ),
-      ));     
-    }
+      );
+    //);     
+  }
 
   @override
   Widget build(BuildContext context) {
