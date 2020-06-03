@@ -35,9 +35,6 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     if (event is FilterUpdatedEvent) {
       yield* _mapFilteredRunsToState(event);
     }
-    if (event is PushNotificationEvent) {
-      yield* _mapMessagePushNotificationToState(event);
-    }
   }
 
   Stream<RunState> _mapRunLoadedToState(GetRunsEvent event) async* {
@@ -54,17 +51,6 @@ class RunBloc extends Bloc<RunEvent, RunState> {
   Stream<RunState> _mapRunLoadedFromLocalStorageToState(GetRunsFromStorageEvent event) async* {
     try {
       yield OfflineState();
-    } catch (e) {
-      yield RunErrorState(message: e.toString());
-    }
-  }
-
-  Stream<RunState> _mapMessagePushNotificationToState(PushNotificationEvent event) async* {
-    yield OnlineState();
-    try {
-      if (event.message.isNotEmpty) {
-        yield OnMessageState(event.message);
-      }
     } catch (e) {
       yield RunErrorState(message: e.toString());
     }

@@ -57,12 +57,3 @@ class AddRunnerSuccessState extends RunState {
   @override
   List<Object> get props => [run, message];
 }
-
-class OnMessageState extends RunState {
-  final Map<String, dynamic> message;
-
-  OnMessageState(this.message);
-
-  @override
-  List<Object> get props => [message];
-}

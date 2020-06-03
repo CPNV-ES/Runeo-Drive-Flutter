@@ -38,11 +38,3 @@ class TakeARunEvent extends RunEvent {
   List<Object> get props => [run, runner, updated_at];
 }
 
-class PushNotificationEvent extends RunEvent {
-  final Map<String, dynamic> message;
-
-  const PushNotificationEvent(this.message);
-
-  @override
-  List<Object> get props => [message];
-}
