@@ -53,8 +53,8 @@ class _RunsPageState extends State<RunsPage> {
     /// Listen to push notifications
     FirebaseMessagingService.instance.firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
+        _showNotificationSnackBar(message);
         _firebaseMessagingBloc.add(OnMessageEvent(message));
-       //_showNotificationSnackBar(message);
       },
     );
   }

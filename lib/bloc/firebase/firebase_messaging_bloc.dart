@@ -6,10 +6,10 @@ import 'package:bloc/bloc.dart';
 import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
 import 'package:RuneoDriverFlutter/bloc/firebase/index.dart';
 
-class ConnectivityBloc extends Bloc<FirebaseMessagingEvent, FirebaseMessagingState> {
+class FirebaseMessagingBloc extends Bloc<FirebaseMessagingEvent, FirebaseMessagingState> {
   final RunBloc _runBloc;
   
-  ConnectivityBloc({
+  FirebaseMessagingBloc({
     @required RunBloc runBloc
   }) : assert(runBloc != null),
       _runBloc = runBloc;
@@ -25,6 +25,8 @@ class ConnectivityBloc extends Bloc<FirebaseMessagingEvent, FirebaseMessagingSta
 
   @override
   Stream<FirebaseMessagingState> mapEventToState(FirebaseMessagingEvent event) async* {
-    
+    if (event is OnMessageEvent) {
+      _runBloc.add(GetRunsEvent());
+    }
   }
 }
