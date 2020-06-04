@@ -1,22 +1,22 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:RuneoDriverFlutter/services/firebase_messaging_service.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timeago/timeago.dart'as timeago;
-import 'package:time/time.dart';
 
 import 'package:RuneoDriverFlutter/bloc/authentication/index.dart';
+import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
+import 'package:RuneoDriverFlutter/bloc/firebase/index.dart';
+import 'package:RuneoDriverFlutter/bloc/connectivity/index.dart';
+import 'package:RuneoDriverFlutter/bloc/stopwatch/index.dart';
+
+import 'package:RuneoDriverFlutter/models/index.dart';
+
 import 'package:RuneoDriverFlutter/views/runs/widgets/filter_button.dart';
 import 'package:RuneoDriverFlutter/views/shared/loading_indicator.dart';
-import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
-import 'package:RuneoDriverFlutter/models/index.dart';
 import 'package:RuneoDriverFlutter/views/runs/widgets/run_list_item.dart';
-import 'package:RuneoDriverFlutter/bloc/connectivity/connectivity_bloc.dart';
-import 'package:RuneoDriverFlutter/bloc/connectivity/index.dart';
+
+import 'package:RuneoDriverFlutter/services/firebase_messaging_service.dart';
 
 class RunsPage extends StatefulWidget {
   @override
@@ -26,24 +26,23 @@ class RunsPage extends StatefulWidget {
 class _RunsPageState extends State<RunsPage> {
   RunBloc _runBloc;
   ConnectivityBloc _connectivityBloc;
+  FirebaseMessagingBloc _firebaseMessagingBloc;
+  StopwatchBloc _stopwatchBloc;
   StreamSubscription<ConnectivityResult> _subscription;
   Color backgroundColor;
   bool loading = true;
   Completer<void> _refreshCompleter;
-  Stopwatch _stopwatch;
   Timer timer;
-  DateTime lastRefreshTimer = 0.minutes.fromNow;
-  Duration lastRefreshTimeElapse;
-  String showLastRefreshTime;
 
   @override
   void initState() {
     super.initState();
     _runBloc = BlocProvider.of<RunBloc>(context);
     _connectivityBloc = BlocProvider.of<ConnectivityBloc>(context);
+    _firebaseMessagingBloc = BlocProvider.of<FirebaseMessagingBloc>(context);
+    _stopwatchBloc = BlocProvider.of<StopwatchBloc>(context);
     _refreshCompleter = Completer<void>();
-    _stopwatch = new Stopwatch();
-    timer = Timer.periodic(Duration(milliseconds: 100), (Timer t) => updateTime(lastRefreshTimer));
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) => _stopwatchBloc.add(RunningTimer()));
 
     /// Listen to connectivity change
     _subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
@@ -54,45 +53,10 @@ class _RunsPageState extends State<RunsPage> {
     /// Listen to push notifications
     FirebaseMessagingService.instance.firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
-       _showNotificationSnackBar(message);
+        _firebaseMessagingBloc.add(OnMessageEvent(message));
+       //_showNotificationSnackBar(message);
       },
     );
-  }
-
-  /// Update display text
-  void updateTime(DateTime lastRefreshTimer) {
-    if (_stopwatch.isRunning) {
-      setState(() {
-        showLastRefreshTime = timeago.format(lastRefreshTimer, locale: 'fr_short');
-      });
-    } else {
-      setState(() {
-        showLastRefreshTime = timeago.format(lastRefreshTimer, locale: 'fr_short');
-      });
-    }
-  }
-
-  /// Start stopwatch and set timer.
-  void startWatch() {
-    _stopwatch.start();
-    setState(() {
-      lastRefreshTimeElapse = _stopwatch.elapsed;
-      lastRefreshTimer = lastRefreshTimeElapse.fromNow;
-    });
-    timer = Timer.periodic(Duration(milliseconds: 100), (Timer t) => updateTime(lastRefreshTimer));
-  }
-
-  /// Stop and reset stopwatch. Then start a new stopwatch.
-  void resetWatch() {
-    timer?.cancel();
-    timer = null;
-    _stopwatch.stop();
-    _stopwatch.reset();
-    setState(() {
-      lastRefreshTimeElapse = Duration.zero;
-      showLastRefreshTime = "";
-    });
-    startWatch();
   }
 
   @override
@@ -100,6 +64,7 @@ class _RunsPageState extends State<RunsPage> {
     super.dispose();
     _runBloc.close();
     _connectivityBloc.close();
+    _stopwatchBloc.close();
     _subscription.cancel();
     timer?.cancel();
   }
@@ -115,7 +80,12 @@ class _RunsPageState extends State<RunsPage> {
             actions: [
               Container(
                 padding: EdgeInsets.only(top: 20),
-                child: (showLastRefreshTime != null) ? Text(showLastRefreshTime.padLeft(5)) : Text("".padLeft(5)),
+                child: BlocBuilder<StopwatchBloc, StopwatchState>(
+                  bloc: _stopwatchBloc,
+                  builder: (context, state) {
+                    return Text(state.displayTimer.padLeft(5));
+                  }
+                )
               ),
               FilterButton(visible: true),
               IconButton(
@@ -157,6 +127,9 @@ class _RunsPageState extends State<RunsPage> {
                 if (current is OfflineState && previous is RunLoadedState) {
                   return false;
                 }
+                if (previous is RunLoadedState && current is OfflineState) {
+                  return false;
+                }
                 if (current is AddRunnerSuccessState) {
                   return false;
                 }
@@ -174,10 +147,10 @@ class _RunsPageState extends State<RunsPage> {
                       return RefreshIndicator(
                         child: _buildRunList(state.runs),
                         onRefresh: () {
-                          if (_stopwatch.isRunning) {
-                            resetWatch();
+                          if (_stopwatchBloc.watch.isRunning) {
+                            _stopwatchBloc.add(Start());
                           } else {
-                            startWatch();
+                            _stopwatchBloc.add(Reset());
                           }
                           _runBloc.add(GetRunsEvent());
                           return _refreshCompleter.future;
