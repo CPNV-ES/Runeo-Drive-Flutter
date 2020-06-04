@@ -23,13 +23,14 @@ class UserRepositoryImpl implements UserRepository {
   /// 
   /// Return the [user].
   Future<User> authenticate({
-    @required String key,
-  }) async {
+      @required String key, String firebaseToken
+    }) async {
     _localStorageRepository.saveToStorage("token", key);
+    _localStorageRepository.saveToStorage("firebaseToken", firebaseToken);
     final response = await _provider.getUser();
     if (response != null) {
       final User user = User.fromJson(response);
-      _localStorageRepository.saveToStorage("currentUser", user);      
+      _localStorageRepository.saveToStorage("currentUser", user);
       return user;
     }
     return response;
@@ -44,7 +45,7 @@ class UserRepositoryImpl implements UserRepository {
       this.currentUser = value;
       return User.fromJson(value);
     }
-    return value;   
+    return value;
   }
 
   /// Check if user is logged in.
@@ -78,7 +79,8 @@ class UserRepositoryImpl implements UserRepository {
       } else {
         return 'Unknown error: $e';
       }
-    } on FormatException {
+    }
+    on FormatException {
       return 'Not the right format!';
     } catch (e) {
       return 'Unknown error: $e';

@@ -29,16 +29,19 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     if (event is GetRunsFromStorageEvent) {
       yield* _mapRunLoadedFromLocalStorageToState(event);
     }
-    if (event is TakeARun) {
+    if (event is TakeARunEvent) {
       yield* _mapTakeARunToState(event);
     }
-    if (event is FilterUpdated) {
+    if (event is FilterUpdatedEvent) {
       yield* _mapFilteredRunsToState(event);
     }
   }
 
   Stream<RunState> _mapRunLoadedToState(GetRunsEvent event) async* {
     final List<Run> runs = await runRepository.getRuns();
+    final userData = await runRepository.getUserRuns();
+    _localStorageRepository.saveToStorage("userRuns", userData);
+
     yield RunLoadingState();
     yield OnlineState();
     try {
@@ -56,7 +59,7 @@ class RunBloc extends Bloc<RunEvent, RunState> {
     }
   }
 
-  Stream<RunState> _mapTakeARunToState(TakeARun event) async* {
+  Stream<RunState> _mapTakeARunToState(TakeARunEvent event) async* {
     try {
       final Run run = await runRepository.assignRunner(event.runner, event.updated_at);
       if (run != null) {
@@ -69,7 +72,7 @@ class RunBloc extends Bloc<RunEvent, RunState> {
       }
   }
 
-  Stream<RunState> _mapFilteredRunsToState(FilterUpdated event) async* {
+  Stream<RunState> _mapFilteredRunsToState(FilterUpdatedEvent event) async* {
     yield RunLoadingState();
     try {
       final List<Run> runs = await runRepository.getRuns();

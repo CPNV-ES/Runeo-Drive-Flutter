@@ -30,8 +30,6 @@ class ApiProvider {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        final userData = await this.getUserRuns();
-        this.storage.setItem("userRuns", userData);
         return data;
       } else {
         throw Exception('error fetching data');
@@ -49,6 +47,9 @@ class ApiProvider {
   /// Throws and Exception when [response.statusCode] is not equal to 200 and when there is no internet connection.
   Future<dynamic> getUser() async {
     final value = await this.storage.getItem("token");
+    /// Get firebase token
+    final valueFirebaseToken = await this.storage.getItem("firebaseToken");
+    print("firebase token : $valueFirebaseToken");
     try {
       var response = await http.get(
       '$_baseUrl/me',

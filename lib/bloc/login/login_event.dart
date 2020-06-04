@@ -8,9 +8,13 @@ abstract class LoginEvent extends Equatable {
 
 class LoginInButtonPressed extends LoginEvent {
   final String token;
+  final String firebaseToken;
 
-  LoginInButtonPressed({@required this.token});
+  LoginInButtonPressed({
+    @required this.token,
+    @required this.firebaseToken
+  });
 
   @override
-  List<Object> get props => [token];
+  List<Object> get props => [token, firebaseToken];
 }

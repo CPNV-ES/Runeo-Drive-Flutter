@@ -1,13 +1,8 @@
-import 'package:equatable/equatable.dart';
-
-class VehicleCategory extends Equatable {
+class VehicleCategory {
   String type;
   String description;
 
   VehicleCategory({this.type, this.description});
-
-  @override
-  List<Object> get props => [type, description];
 
   VehicleCategory.fromJson(Map<String, dynamic> json) {
     type = json['type'];

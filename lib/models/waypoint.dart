@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-class Waypoint extends Equatable{
+class Waypoint {
   String nickname;
   Null geocoding;
 
@@ -8,9 +6,6 @@ class Waypoint extends Equatable{
     this.nickname = nickname;
     this.geocoding = geocoding;
   }
-
-  @override
-  List<Object> get props => [nickname, geocoding];
 
   Waypoint.fromJson(Map<String, dynamic> json) {
     nickname = json['nickname'];

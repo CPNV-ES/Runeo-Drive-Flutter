@@ -35,7 +35,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       try {
         final currentUser = await _userRepository.authenticate(
-          key: event.token
+          key: event.token,
+          firebaseToken: event.firebaseToken
         );
         if (currentUser != null) {
           // push new authentication event
