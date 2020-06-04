@@ -30,8 +30,6 @@ class ApiProvider {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        final userData = await this.getUserRuns();
-        this.storage.setItem("userRuns", userData);
         return data;
       } else {
         throw Exception('error fetching data');

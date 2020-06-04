@@ -39,6 +39,9 @@ class RunBloc extends Bloc<RunEvent, RunState> {
 
   Stream<RunState> _mapRunLoadedToState(GetRunsEvent event) async* {
     final List<Run> runs = await runRepository.getRuns();
+    final userData = await runRepository.getUserRuns();
+    _localStorageRepository.saveToStorage("userRuns", userData);
+
     yield RunLoadingState();
     yield OnlineState();
     try {
