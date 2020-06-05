@@ -52,9 +52,14 @@ class _RunsPageState extends State<RunsPage> {
 
     /// Listen to push notifications
     FirebaseMessagingService.instance.firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) {
-        _showNotificationSnackBar(message);
+      onMessage: (Map<String, dynamic> message) async {
+        print(message);
+        if (message['notification']['title'] != null) {
+          _showNotificationSnackBar(message);
+        } else {
+        _stopwatchBloc.add(Start());
         _firebaseMessagingBloc.add(OnMessageEvent(message));
+        }
       },
     );
   }
@@ -65,6 +70,7 @@ class _RunsPageState extends State<RunsPage> {
     _runBloc.close();
     _connectivityBloc.close();
     _stopwatchBloc.close();
+    _firebaseMessagingBloc.close();
     _subscription.cancel();
     timer?.cancel();
   }

@@ -30,23 +30,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
+    yield LoginInitial();
     if (event is LoginInButtonPressed) {
       yield LoginLoading();
 
       try {
         final currentUser = await _userRepository.authenticate(
           key: event.token,
+          
           firebaseToken: event.firebaseToken
         );
         if (currentUser != null) {
           // push new authentication event
           _authenticationBloc.add(LoggedIn(user: currentUser));
           yield LoginSuccess();
-          yield LoginInitial();
         } else {
           yield LoginFailure(error: "It's not the right token");
         }
-        yield LoginInitial();
       } on Exception catch (err) {
         yield LoginFailure(error: '$err' ?? 'An unknown error occured');
       }
