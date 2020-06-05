@@ -91,6 +91,8 @@ class _RunsPageState extends State<RunsPage> {
               IconButton(
                 icon: Icon(Icons.exit_to_app),
                 onPressed: () {
+                  FirebaseMessagingService.instance.firebaseUnsubscribe("message_to_all");
+                  FirebaseMessagingService.instance.firebaseUnsubscribe("update_runs");
                   BlocProvider.of<AuthenticationBloc>(context).add(LoggedOut());
                 },
               ),
