@@ -1,9 +1,7 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:RuneoDriverFlutter/models/waypoint.dart';
 import 'package:RuneoDriverFlutter/models/runner.dart';
 
-class Run extends Equatable {
+class Run {
   int id;
   String status;
   String title;
@@ -68,9 +66,6 @@ class Run extends Equatable {
     this.runners = runners;
   }
 
-  @override
-  List<Object> get props => [id, title, beginAt, finishedAt, startAt, endAt, waypoints, runners, runinfo, status, nameContact, numContact, flight, train, updatedAt, nbPassenger, paxTbc, timeTbc];
-
   Run.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     status = json['status'];
@@ -127,6 +122,20 @@ class Run extends Equatable {
       data['runners'] = this.runners.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  /// Getter that find all the runner fullnames of a run
+  /// 
+  /// Return [String]
+  String get runnerFullNames {
+    List<String> runnerNames = [];
+    runners.forEach((runner) {
+      if (runner.user != null) {
+        runnerNames.add(runner.user.fullname);
+      }
+    });
+
+    return runnerNames.join(" et ");
   }
 
   /// Checks runs that have a runner.

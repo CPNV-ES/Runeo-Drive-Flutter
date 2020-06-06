@@ -11,6 +11,9 @@ import 'package:RuneoDriverFlutter/views/runs/runs_page.dart';
 import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
 import 'package:RuneoDriverFlutter/repository/run_repository.dart';
 import 'package:RuneoDriverFlutter/bloc/connectivity/index.dart';
+import 'package:RuneoDriverFlutter/bloc/stopwatch/stopwatch_bloc.dart';
+
+import 'package:RuneoDriverFlutter/bloc/firebase/index.dart';
 
 import 'package:RuneoDriverFlutter/views/shared/loading_indicator.dart';
 import 'package:RuneoDriverFlutter/views/shared/splash_screen.dart';
@@ -72,10 +75,16 @@ class MyApp extends StatelessWidget {
                   create: (context) => RunBloc(runRepository: RunRepositoryImpl()),
                 ),
                 BlocProvider<ConnectivityBloc>(
-                  create: (context) => ConnectivityBloc(runBloc: BlocProvider.of<RunBloc>(context) )
+                  create: (context) => ConnectivityBloc(runBloc: BlocProvider.of<RunBloc>(context))
                 ),
+                BlocProvider<FirebaseMessagingBloc>(
+                  create: (context) => FirebaseMessagingBloc(runBloc: BlocProvider.of<RunBloc>(context))
+                ),
+                BlocProvider<StopwatchBloc>(
+                  create: (context) => StopwatchBloc()
+                )
               ], 
-              child: RunsPage(),
+              child: Scaffold(body: RunsPage()),
             );
           }
           if (state is AuthenticationUnauthenticated) {

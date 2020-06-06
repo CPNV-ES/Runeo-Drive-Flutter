@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-class User extends Equatable {
+class User {
   int id;
   String name;
   String firstname;
@@ -31,9 +29,6 @@ class User extends Equatable {
     this.imageProfile = imageProfile ?? 'assets/user/user.jpg';
     this.hasNotificationToken = hasNotificationToken;
   }
-
-  @override
-  List<Object> get props => [id, name, firstname, lastname, email, imageProfile, phoneNumber, hasNotificationToken];
 
   String get fullname => '$firstname $lastname';
 

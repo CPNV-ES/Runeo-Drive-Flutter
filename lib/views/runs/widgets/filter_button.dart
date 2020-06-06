@@ -22,7 +22,7 @@ class FilterButton extends StatelessWidget {
         final button = _Button(
           onSelected: (filter) {
             BlocProvider.of<RunBloc>(context)
-              .add(FilterUpdated(filter));
+              .add(FilterUpdatedEvent(filter));
           },
           activeFilter: state is RunLoadedState ?
           state.activeFilter :

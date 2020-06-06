@@ -1,8 +1,6 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:RuneoDriverFlutter/models/user.dart';
 
-class Comment extends Equatable {
+class Comment {
   int id;
   String content;
   User user;
@@ -22,8 +20,6 @@ class Comment extends Equatable {
     this.created_at = created_at;
   }
 
-  @override
-  List<Object> get props => [id, content, user, created_at];
 
   Comment.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -40,5 +36,7 @@ class Comment extends Equatable {
       data['user'] = this.user.toJson();
     }
     data['created_at'] = this.created_at;
+
+    return data;
   }
 }
