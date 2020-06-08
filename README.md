@@ -35,6 +35,24 @@ flutter run
 
 La [documentation](./docs/Firebase_Messaging_Cloud_Installation(Android&IOS).md) se trouve dans le dossier docs.
 
+  ### Testez les push notifications
+  
+  Dans le dossier test_push_notification se trouve 2 fichiers pythons qui permettent d'envoyer des push notifications.
+  
+  Pour la configuration, il faut se référer au [readme](./test_push_notification/readne.md).
+  
+  Pour le message à tous les chauffeurs, il faut lancer
+  
+  ```bash
+python message_to_all.py
+```
+
+Et pour mettre à jours les runs, il suffit simplement de lancer
+
+ ```bash
+python update_runs.py
+```
+
 ## Configuration du scan de QR codes
 
 La [documentation](./docs/Barcode_scan_configuration(Android&IOS).md) se trouve dans le dossier docs.
