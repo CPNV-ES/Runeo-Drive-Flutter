@@ -85,4 +85,39 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 ### IOS implémentation
 
+**Il faut un compte Apple Developer pour pouvoir activer les push notifications sur IOS.**
 
+Pour intégrer ce plugin dans la partie iOS de l'application, suivez ces étapes :
+
+1. Générer les certificats requis par Apple pour recevoir les notifications "push" en suivant [ce guide](https://firebase.google.com/docs/cloud-messaging/ios/certs) dans la documentation de Firebase. Vous pouvez sauter la section intitulée *Create the Provisioning Profil*.
+
+2. En utilisant la [Console Firebase](https://console.firebase.google.com/), ajoutez une application iOS à votre projet : Suivez l'assistant, téléchargez le fichier `GoogleService-Info.plist` généré, ouvrez `ios/Runner.xcworkspace` avec Xcode, et dans Xcode placez le fichier dans `ios/Runner`. **Ne** suivez pas les étapes intitulées &quot;Add Firebase SDK&quot; et &quot;Add initialization code&quot; dans l'assistant Firebase.
+
+3. Dans Xcode, sélectionnez `Runner` dans le navigateur de projet. Dans l'onglet Capabilities, activez les `Push Notifications` et les `Background Modes`, et activez le `Background Fetch` et les `Remote notifications` sous `Background Modes`.
+
+4. Suivez les étapes dans la section "[Upload your APNs certificate](https://firebase.google.com/docs/cloud-messaging/ios/client#upload_your_apns_certificate)" de la documentation Firebase.
+
+5. Si vous devez désactiver la méthode de swizzling effectué par le SDK iOS FCM (par exemple pour que vous puissiez utiliser ce plugin avec d'autres plugins de notification), ajoutez ce qui suit au fichier `Info.plist` de votre application.
+
+```xml
+<key>FirebaseAppDelegateProxyEnabled</key>
+<false/>
+```
+
+Après cela, ajoutez les lignes suivantes dans la `(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions` méthode qui se trouve dans `AppDelegate.m`/`AppDelegate.swift` de votre projet IOS.
+
+Objective-C:
+
+```objectivec
+if (@available(iOS 10.0, *)) {
+  [UNUserNotificationCenter currentNotificationCenter].delegate = (id<UNUserNotificationCenterDelegate>) self;
+}
+```
+
+Swift:
+
+```swift
+if #available(iOS 10.0, *) {
+  UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+}
+```
