@@ -33,8 +33,8 @@ flutter run
 
 ## Installation de Firebase Messaging Cloud
 
-La [documentation](./docs/Firebase Messaging Cloud Installation (Android & IOS).md) se trouve dans le dossier docs.
+La [documentation](./docs/Firebase_Messaging_Cloud_Installation(Android&IOS).md) se trouve dans le dossier docs.
 
 ## Configuration du scan de QR codes
 
-La [documentation](./docs/Barcode_scan Configuration (Android et IOS).md) se trouve dans le dossier docs.
+La [documentation](./docs/Barcode_scan_configuration(Android&IOS).md) se trouve dans le dossier docs.
