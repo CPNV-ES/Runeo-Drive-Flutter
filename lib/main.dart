@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:RuneoDriverFlutter/bloc/authentication/index.dart';
@@ -38,7 +39,9 @@ class SimpleBlocDelegate extends BlocDelegate {
   }
 }
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DotEnv().load('.env');
   BlocSupervisor.delegate = SimpleBlocDelegate();
   /// Initialize the locale date.
   initializeDateFormatting("fr_CH");
