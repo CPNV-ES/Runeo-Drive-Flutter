@@ -39,13 +39,15 @@ class RunBloc extends Bloc<RunEvent, RunState> {
 
   Stream<RunState> _mapRunLoadedToState(GetRunsEvent event) async* {
     final List<Run> runs = await runRepository.getRuns();
-    final userData = await runRepository.getUserRuns();
-    _localStorageRepository.saveToStorage("userRuns", userData);
 
     yield RunLoadingState();
     yield OnlineState();
     try {
-      yield RunLoadedState(runs: runs.where((run) => run.status != "unpublished" && run.status != "error").toList());
+      if (runs != null && runs.isNotEmpty) {
+        yield RunLoadedState(runs: runs.where((run) => run.status != "unpublished" && run.status != "error").toList());
+      } else {
+        yield RunEmptyState();
+      }
     } catch (e) {
       yield RunErrorState(message: e.toString());
     }
@@ -65,7 +67,7 @@ class RunBloc extends Bloc<RunEvent, RunState> {
       if (run != null) {
         yield AddRunnerSuccessState(run, message: "Successfully added runner to " + event.run.title + " run");
       } else {
-        yield AddRunnerSuccessState(run, message: "Error when adding a runner to " + event.run.title);
+        yield AddRunnerErrorState(message: "Error when adding a runner to " + event.run.title);
       }
       } catch (e) {
         yield OfflineState();

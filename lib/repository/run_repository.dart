@@ -23,6 +23,8 @@ class RunRepositoryImpl implements RunRepository {
       runs.add(Run.fromJson(run));
     });
     _localStorageRepository.saveToStorage("runs", response);
+    final userData = await this.getUserRuns();
+    _localStorageRepository.saveToStorage("userRuns", userData);
     
     return runs;
   }

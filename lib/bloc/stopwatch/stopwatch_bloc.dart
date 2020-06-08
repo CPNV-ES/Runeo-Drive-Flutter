@@ -13,8 +13,8 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
   String _displayTimer;
 
   StopwatchBloc() {
-    // Add a new locale messages
     watch = new Stopwatch();
+    // Add a new locale messages
     timeago.setLocaleMessages('fr', timeago.FrMessages());
   }
 

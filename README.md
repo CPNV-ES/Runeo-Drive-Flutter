@@ -1,16 +1,40 @@
-# RuneoDriverFlutter
+# Runeo Drive Flutter
 
-A new Flutter project.
+Application mobile de suivi des courses des chauffeurs du Paleo Festival.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. [Installation de Flutter](https://flutter.dev/docs/get-started/install)
 
-A few resources to get you started if this is your first Flutter project:
+2. Clonez le repo
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```bash
+git clone https://github.com/CPNV-ES/Runeo-Drive-Flutter.git
+cd Runeo-Drive-Flutter
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+3. Faire une copie du .env.example renommée en .env
+
+```bash
+cp .env.example .env
+```
+
+4. Ajoutez l'url du backend Runeo-Desk-2020 au .env
+
+```
+API_URL=<backend url>
+```
+
+5. Lancez l'application mobile
+
+```bash
+flutter run
+```
+
+## Installation de Firebase Messaging Cloud
+
+La [documentation](./docs/Firebase Messaging Cloud Installation (Android & IOS).md) se trouve dans le dossier docs.
+
+## Configuration du scan de QR codes
+
+La [documentation](./docs/Barcode_scan Configuration (Android et IOS).md) se trouve dans le dossier docs.

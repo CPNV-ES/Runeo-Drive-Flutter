@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 
 import 'package:RuneoDriverFlutter/models/index.dart';
 
 class ApiProvider {
-  final String _baseUrl = 'http://10.0.2.2:8000/api';
+  final String _baseUrl = DotEnv().env['API_URL'];
   LocalStorage storage;
 
   ApiProvider() {
