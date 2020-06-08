@@ -53,7 +53,6 @@ class _RunsPageState extends State<RunsPage> {
     /// Listen to push notifications
     FirebaseMessagingService.instance.firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print(message);
         if (message['notification']['title'] != null) {
           _showNotificationSnackBar(message);
         } else {
@@ -146,31 +145,33 @@ class _RunsPageState extends State<RunsPage> {
                 if (state is RunInitalState) {
                   return LoadingIndicator();
                 }
+
                 if (state is RunLoadingState) {
                   return LoadingIndicator();
                 }
+
                 if (state is RunLoadedState) {
-                  if (state.runs != null && state.runs.isNotEmpty) {
-                    if (loading) {
-                      return RefreshIndicator(
-                        child: _buildRunList(state.runs),
-                        onRefresh: () {
-                          if (_stopwatchBloc.watch.isRunning) {
-                            _stopwatchBloc.add(Start());
-                          } else {
-                            _stopwatchBloc.add(Reset());
-                          }
-                          _runBloc.add(GetRunsEvent());
-                          return _refreshCompleter.future;
+                  if (loading) {
+                    return RefreshIndicator(
+                      child: _buildRunList(state.runs),
+                      onRefresh: () {
+                        if (_stopwatchBloc.watch.isRunning) {
+                          _stopwatchBloc.add(Start());
+                        } else {
+                          _stopwatchBloc.add(Reset());
                         }
-                      );
-                    } else {
-                      return _buildRunList(state.runs);
-                    }
+                        _runBloc.add(GetRunsEvent());
+                        return _refreshCompleter.future;
+                      }
+                    );
                   } else {
-                    return _buildNoDataView(context);
+                    return _buildRunList(state.runs);
                   }
                 }
+                if (state is RunEmptyState) {
+                  return _buildNoDataView(context);
+                }
+
                 if (state is RunErrorState) {
                   return _buildErrorUi(state.message);
                 } else {
