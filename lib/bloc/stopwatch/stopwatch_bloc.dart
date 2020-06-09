@@ -14,8 +14,6 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
 
   StopwatchBloc() {
     watch = new Stopwatch();
-    // Add a new locale messages
-    timeago.setLocaleMessages('fr', timeago.FrMessages());
   }
 
   @override
@@ -62,9 +60,9 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
   /// Update display text
   void updateTime(DateTime lastRefreshTimer) {
     if (watch.isRunning) {
-      _displayTimer = timeago.format(lastRefreshTimer, locale: 'fr_short');
+      _displayTimer = timeago.format(lastRefreshTimer, locale: 'fr');
     } else {
-      _displayTimer = timeago.format(lastRefreshTimer, locale: 'fr_short');
+      _displayTimer = timeago.format(lastRefreshTimer, locale: 'fr');
     }
   }
 
