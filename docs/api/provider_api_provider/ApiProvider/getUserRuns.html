@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the getUserRuns method from the ApiProvider class, for the Dart programming language.">
+  <title>getUserRuns method - ApiProvider class - api_provider library - Dart API</title>
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../../static-assets/github.css">
+  <link rel="stylesheet" href="../../static-assets/styles.css">
+  <link rel="icon" href="../../static-assets/favicon.png">
+
+</head>
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">RuneoDriverFlutter</a></li>
+    <li><a href="../../provider_api_provider/provider_api_provider-library.html">api_provider</a></li>
+    <li><a href="../../provider_api_provider/ApiProvider-class.html">ApiProvider</a></li>
+    <li class="self-crumb">getUserRuns method</li>
+  </ol>
+  <div class="self-name">getUserRuns</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="../../index.html">RuneoDriverFlutter</a></li>
+      <li><a href="../../provider_api_provider/provider_api_provider-library.html">api_provider</a></li>
+      <li><a href="../../provider_api_provider/ApiProvider-class.html">ApiProvider</a></li>
+      <li class="self-crumb">getUserRuns method</li>
+    </ol>
+    
+    <h5>ApiProvider class</h5>
+    <ol>
+    
+        <li class="section-title"><a href="../../provider_api_provider/ApiProvider-class.html#constructors">Constructors</a></li>
+        <li><a href="../../provider_api_provider/ApiProvider/ApiProvider.html">ApiProvider</a></li>
+    
+        <li class="section-title">
+            <a href="../../provider_api_provider/ApiProvider-class.html#instance-properties">Properties</a>
+        </li>
+        <li><a href="../../provider_api_provider/ApiProvider/storage.html">storage</a></li>
+        <li class="inherited"><a href="../../dart-core/Object/hashCode.html">hashCode</a></li>
+        <li class="inherited"><a href="../../dart-core/Object/runtimeType.html">runtimeType</a></li>
+    
+        <li class="section-title"><a href="../../provider_api_provider/ApiProvider-class.html#instance-methods">Methods</a></li>
+        <li><a href="../../provider_api_provider/ApiProvider/getRuns.html">getRuns</a></li>
+        <li><a href="../../provider_api_provider/ApiProvider/getUser.html">getUser</a></li>
+        <li><a href="../../provider_api_provider/ApiProvider/getUserRuns.html">getUserRuns</a></li>
+        <li><a href="../../provider_api_provider/ApiProvider/setRunner.html">setRunner</a></li>
+        <li class="inherited"><a href="../../dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+        <li class="inherited"><a href="../../dart-core/Object/toString.html">toString</a></li>
+    
+        <li class="section-title inherited"><a href="../../provider_api_provider/ApiProvider-class.html#operators">Operators</a></li>
+        <li class="inherited"><a href="../../dart-core/Object/operator_equals.html">operator ==</a></li>
+    
+    
+    
+    
+    
+    </ol>
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-method">getUserRuns</span> method</h1></div>
+
+    <section class="multi-line-signature">
+      <span class="returntype"><a href="../../dart-async/Future-class.html">Future</a></span>
+            <span class="name ">getUserRuns</span>
+(<wbr>)
+      
+    </section>
+    <section class="desc markdown">
+      <p>GET authenticated user runs.</p>
+<p>Return all the runs from the authenticated user as a dynamic <code>data</code>. 
+Throws and Exception when <code>response.statusCode</code> is not equal to 200 and when there is no internet connection.</p>
+    </section>
+    
+    <section class="summary source-code" id="source">
+      <h2><span>Implementation</span></h2>
+      <pre class="language-dart"><code class="language-dart">Future&lt;dynamic&gt; getUserRuns() async {
+  final value = await this.storage.getItem(&quot;token&quot;);
+  try {
+    var response = await http.get(
+    &#39;$_baseUrl&#47;me&#47;runs&#39;,
+    headers: {
+      HttpHeaders.contentTypeHeader: &quot;application&#47;json&quot;,
+      HttpHeaders.authorizationHeader: &quot;Bearer $value&quot;
+    });
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data;
+    } else {
+      throw Exception(&#39;error fetching data&#39;);
+    }
+  } catch (e, stackTrace) {
+    if (e is SocketException) {
+      throw Exception(&#39;No internet connection&#39;);
+    }
+  }
+}</code></pre>
+    </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    RuneoDriverFlutter
+      0.3.0
+  </span>
+
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../../static-assets/typeahead.bundle.min.js"></script>
+<script src="../../static-assets/highlight.pack.js"></script>
+<script src="../../static-assets/URI.js"></script>
+<script src="../../static-assets/script.js"></script>
+
+
+</body>
+
+</html>
