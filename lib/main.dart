@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -41,6 +42,9 @@ class SimpleBlocDelegate extends BlocDelegate {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  /// Lock the screen in portrait
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown,DeviceOrientation.portraitUp]);
+  /// Initialize dotenv
   await DotEnv().load('.env');
   BlocSupervisor.delegate = SimpleBlocDelegate();
   /// Initialize the locale date.
@@ -78,7 +82,7 @@ class MyApp extends StatelessWidget {
                   create: (context) => RunBloc(runRepository: RunRepositoryImpl()),
                 ),
                 BlocProvider<ConnectivityBloc>(
-                  create: (context) => ConnectivityBloc(runBloc: BlocProvider.of<RunBloc>(context))
+                  create: (context) => ConnectivityBloc(runBloc: BlocProvider.of<RunBloc>(context), stopwatchBloc: BlocProvider.of<StopwatchBloc>(context))
                 ),
                 BlocProvider<FirebaseMessagingBloc>(
                   create: (context) => FirebaseMessagingBloc(runBloc: BlocProvider.of<RunBloc>(context))

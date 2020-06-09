@@ -22,15 +22,15 @@ class _LoginFormState extends State<LoginForm> {
     FirebaseMessagingService.instance.firebaseSubscribe("message_to_all");
     FirebaseMessagingService.instance.firebaseSubscribe("update_runs");
 
-    // Needs to be changed, token hardcoded for now
-    //userRepository.barcodeScanning().then((value) =>
+    // Scan the QR code
+    userRepository.barcodeScanning().then((value) =>
       BlocProvider.of<LoginBloc>(context).add(
         LoginInButtonPressed(
-          token: "S114eYmlUVsXuJ1vf0iJhAF4LKDxM3q7yl2hN5ardbjEgMvtA9v1xqCeOWcZ",
+          token: value,
           firebaseToken: firebaseToken
         ),
-      );
-    //);     
+      ),
+    );     
   }
 
   @override
