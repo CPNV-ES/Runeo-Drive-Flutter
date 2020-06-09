@@ -39,7 +39,7 @@ La [documentation](./docs/Firebase_Messaging_Cloud_Installation(Android&IOS).md)
   
   Dans le dossier test_push_notification se trouve 2 fichiers pythons qui permettent d'envoyer des push notifications.
   
-  Pour la configuration, il faut se référer au [readme](./test_push_notification/readne.md).
+  Pour la configuration, il faut se référer au [readme](./test_push_notification/readme.md).
   
   Pour le message à tous les chauffeurs, il faut lancer
   
