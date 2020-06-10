@@ -14,6 +14,8 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
 
   StopwatchBloc() {
     watch = new Stopwatch();
+    // Add a new locale messages
+    timeago.setLocaleMessages('fr', timeago.FrMessages());
   }
 
   @override
@@ -26,9 +28,6 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
     if (event is Start) {
       yield* _mapStartToState();
     }
-    if (event is Reset) {
-      yield* _mapResetToState();
-    }
     if (event is RunningTimer) {
       yield* _mapUpdateToState();
     }
@@ -40,16 +39,6 @@ class StopwatchBloc extends Bloc<StopwatchEvent, StopwatchState> {
     _currentDuration = watch.elapsed;
     _lastRefreshTimer = _currentDuration.fromNow;
     yield Running(_displayTimer);
-  }
-
-  Stream<StopwatchState> _mapResetToState() async* {
-    watch.stop();
-    watch.reset();
-    _currentDuration = Duration.zero;
-    yield Ready(_displayTimer);
-    _displayTimer = "";
-    yield Running(_displayTimer);
-    yield* _mapStartToState();
   }
 
   Stream<StopwatchState> _mapUpdateToState() async* {
