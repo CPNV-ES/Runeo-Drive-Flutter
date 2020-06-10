@@ -88,7 +88,7 @@ class _RunsPageState extends State<RunsPage> {
                 child: BlocBuilder<StopwatchBloc, StopwatchState>(
                   bloc: _stopwatchBloc,
                   builder: (context, state) {
-                    return Text(state.displayTimer.padLeft(5));
+                    return (state.displayTimer != null) ? Text(state.displayTimer.padLeft(5)) : Text("".padLeft(5));
                   }
                 )
               ),
@@ -157,8 +157,6 @@ class _RunsPageState extends State<RunsPage> {
                       onRefresh: () {
                         if (_stopwatchBloc.watch.isRunning) {
                           _stopwatchBloc.add(Start());
-                        } else {
-                          _stopwatchBloc.add(Reset());
                         }
                         _runBloc.add(GetRunsEvent());
                         return _refreshCompleter.future;

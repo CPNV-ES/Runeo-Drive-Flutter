@@ -6,12 +6,6 @@ abstract class StopwatchEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class Reset extends StopwatchEvent {
-
-  @override
-  List<Object> get props => null;
-}
-
 class Start extends StopwatchEvent {
 
   @override
