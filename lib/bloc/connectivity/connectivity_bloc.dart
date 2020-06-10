@@ -34,8 +34,8 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
       if (event.result == ConnectivityResult.none) {
         _runBloc.add(GetRunsFromStorageEvent());
       } else {
-        _runBloc.add(GetRunsEvent());
         _stopwatchBloc.add(Start());
+        _runBloc.add(GetRunsEvent());
       }
     } 
   }
