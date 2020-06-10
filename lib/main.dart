@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:RuneoDriverFlutter/bloc/authentication/index.dart';
@@ -38,7 +40,12 @@ class SimpleBlocDelegate extends BlocDelegate {
   }
 }
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  /// Lock the screen in portrait
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown,DeviceOrientation.portraitUp]);
+  /// Initialize dotenv
+  await DotEnv().load('.env');
   BlocSupervisor.delegate = SimpleBlocDelegate();
   /// Initialize the locale date.
   initializeDateFormatting("fr_CH");
@@ -74,14 +81,14 @@ class MyApp extends StatelessWidget {
                 BlocProvider<RunBloc>(
                   create: (context) => RunBloc(runRepository: RunRepositoryImpl()),
                 ),
-                BlocProvider<ConnectivityBloc>(
-                  create: (context) => ConnectivityBloc(runBloc: BlocProvider.of<RunBloc>(context))
-                ),
                 BlocProvider<FirebaseMessagingBloc>(
                   create: (context) => FirebaseMessagingBloc(runBloc: BlocProvider.of<RunBloc>(context))
                 ),
                 BlocProvider<StopwatchBloc>(
                   create: (context) => StopwatchBloc()
+                ),
+                BlocProvider<ConnectivityBloc>(
+                  create: (context) => ConnectivityBloc(runBloc: BlocProvider.of<RunBloc>(context), stopwatchBloc: BlocProvider.of<StopwatchBloc>(context))
                 )
               ], 
               child: Scaffold(body: RunsPage()),

@@ -29,8 +29,14 @@ class RunLoadedState extends RunState {
   List<Object> get props => [runs, activeFilter];
 }
 
+class RunEmptyState extends RunState {
+
+  @override
+  List<Object> get props => [];
+}
+
 class RunErrorState extends RunState {
-  String message;
+  final String message;
 
   RunErrorState({@required this.message});
 
@@ -49,11 +55,20 @@ class OfflineState extends RunState {
 }
 
 class AddRunnerSuccessState extends RunState {
-  Run run;
-  String message;
+  final Run run;
+  final String message;
 
   AddRunnerSuccessState(this.run, {@required this.message});
 
   @override
   List<Object> get props => [run, message];
+}
+
+class AddRunnerErrorState extends RunState {
+  final String message;
+
+  AddRunnerErrorState({@required this.message});
+
+  @override
+  List<Object> get props => [message];
 }

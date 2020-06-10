@@ -6,14 +6,18 @@ import 'package:bloc/bloc.dart';
 
 import 'package:RuneoDriverFlutter/bloc/runs/index.dart';
 import 'package:RuneoDriverFlutter/bloc/connectivity/index.dart';
+import 'package:RuneoDriverFlutter/bloc/stopwatch/index.dart';
 
 class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
   final RunBloc _runBloc;
+  final StopwatchBloc _stopwatchBloc;
   
   ConnectivityBloc({
-    @required RunBloc runBloc
-  }) : assert(runBloc != null),
-      _runBloc = runBloc;
+    @required RunBloc runBloc,
+    @required StopwatchBloc stopwatchBloc
+  }) : assert(runBloc != null && stopwatchBloc != null),
+      _runBloc = runBloc,
+      _stopwatchBloc = stopwatchBloc;
   
   @override
   Future<void> close() async{
@@ -30,6 +34,7 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
       if (event.result == ConnectivityResult.none) {
         _runBloc.add(GetRunsFromStorageEvent());
       } else {
+        _stopwatchBloc.add(Start());
         _runBloc.add(GetRunsEvent());
       }
     } 
