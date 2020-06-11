@@ -42,8 +42,9 @@ class UserRepositoryImpl implements UserRepository {
   Future<User> getCurrentUser() async {
     var value = await _provider.storage.getItem("currentUser");
     if (value != null) {
-      this.currentUser = value;
-      return User.fromJson(value);
+      final User user = value;
+      this.currentUser = user;
+      return user;
     }
     return value;
   }
@@ -62,6 +63,7 @@ class UserRepositoryImpl implements UserRepository {
 
   /// Deleted token and current user from local storage.
   Future<void> logOut() async {
+    this.currentUser = null;
     _localStorageRepository.deleteFromStorage("token");
     _localStorageRepository.deleteFromStorage("currentUser");
   }
